@@ -1,43 +1,55 @@
-import 'package:flutter/foundation.dart';             // Fournit ChangeNotifier (mécanisme pour notifier l’UI des changements)
-import '../models/product.dart';                      // Import du modèle Product
-import '../services/api_service.dart';                // Import du service qui gère les appels API
+import 'package:flutter/foundation.dart';
+import '../models/product.dart';
+import '../services/api_service.dart';
 
-class ProductsViewModel extends ChangeNotifier {      // ViewModel qui gère l’état des produits et notifie l’UI extends ChangeNotifier pour pouvoir utiliser notifyListeners et pour alerter l'ui du changement des données
-  final ApiService _apiService = ApiService();        // Instance privée du service API (utilisée pour fetch les données)
+class ProductsViewModel extends ChangeNotifier {
+  final ApiService _apiService = ApiService();
 
-  // --------------------
-  // États des données
-  // --------------------
-  List<Product> _products = [];                       // Liste privée de produits (données récupérées depuis l’API)
-  bool _isLoading = false;                            // Indique si un chargement est en cours (true = spinner affiché)
-  String _errorMessage = '';                          // Message d’erreur (chaîne vide = pas d’erreur)
+  // État privé
+  List<Product> _products = [];
+  bool _isLoading = false;
+  String _errorMessage = '';
 
-  // Getters publics
-  List<Product> get products => _products;            // Expose la liste en lecture seule (pas de setter public)
-  bool get isLoading => _isLoading;                   // Expose l’état de chargement à l’UI
-  String get errorMessage => _errorMessage;           // Expose le dernier message d’erreur
-  bool get hasError => _errorMessage.isNotEmpty;      // Pratique : vrai s’il y a un message d’erreur non vide
+  // Getters publics (lecture seule)
+  List<Product> get products => _products;
+  bool get isLoading => _isLoading;
+  String get errorMessage => _errorMessage;
+  bool get hasError => _errorMessage.isNotEmpty;
 
-  // Constructeur - chargement automatique
-  ProductsViewModel() {                               // Constructeur du ViewModel
-    loadProducts();                                   // Déclenche un premier chargement (attention au double fetch, voir note)
+  // Chargement automatique à l'instanciation
+  ProductsViewModel() {
+    loadProducts();
   }
 
-  // Chargement des produits
-  Future<void> loadProducts() async {                 // Méthode asynchrone : charge et met à jour l’état
-    if (_isLoading) return;                           // Garde-fou : si un fetch est déjà en cours, on sort
+  Future<void> loadProducts() async {
+    // Éviter les appels multiples simultanés
+    if (_isLoading) return;
 
-    _isLoading = true;                                // Passe en mode "chargement…"
-    _errorMessage = '';                               // Réinitialise l’erreur précédente
-    notifyListeners();                                // Notifie l’UI (pour afficher le spinner par ex.)
+    _setLoading(true);
+    _clearError();
 
     try {
-      _products = await _apiService.fetchProducts();  // Appel réseau (await) : récupère les produits via le service
+      _products = await _apiService.fetchProducts();
     } catch (error) {
-      _errorMessage = 'Impossible de charger les produits'; // En cas d’échec : fixe un message d’erreur pour l’UI
+      _setError('Impossible de charger les produits');
     }
 
-    _isLoading = false;                               // Fin du chargement (réussi ou non)
-    notifyListeners();                                // Notifie l’UI (masquer le spinner, afficher liste ou erreur)
+    _setLoading(false);
+  }
+
+  // Méthodes privées pour gérer l'état
+  void _setLoading(bool loading) {
+    _isLoading = loading;
+    notifyListeners();
+  }
+
+  void _setError(String error) {
+    _errorMessage = error;
+    notifyListeners();
+  }
+
+  void _clearError() {
+    _errorMessage = '';
+    notifyListeners();
   }
 }
