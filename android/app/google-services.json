@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "100846685226",
+    "project_id": "commerce-c602b",
+    "storage_bucket": "commerce-c602b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100846685226:android:49d193b5980352410cc753",
+        "android_client_info": {
+          "package_name": "commerce.flutter.flutter_commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPba4bhlsk1TdoN79tRjUqvRfKizE4YFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
