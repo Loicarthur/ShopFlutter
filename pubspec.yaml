@@ -14,7 +14,7 @@ dependencies:
   # Ajout de firebase core = toutes les fonctionalités principales de firebase
   firebase_core: ^4.1.0
   # Ajout de firebase auth = toutes les fonctionalités d'auth de firebase
-  firebase_auth: ^6.0.2
+  firebase_auth: ^6.1.0
   # 🔥 AJOUT : Packages pour MVVM + API
   provider: ^6.1.2              # State management MVVM
   http: ^1.2.1                  # Pour les appels API
@@ -76,3 +76,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  assets:
+    - assets/products.json

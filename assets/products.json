@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "T-shirt Flutter",
+    "price": 29.99,
+    "description": "T-shirt officiel Flutter",
+    "category": "Vêtements",
+    "image": "https://via.placeholder.com/150",
+    "rating": {"rate": 4.5, "count": 120}
+  },
+  {
+    "id": 2,
+    "title": "Casquette Dart",
+    "price": 19.99,
+    "description": "Casquette Dart pour développeur",
+    "category": "Accessoires",
+    "image": "https://via.placeholder.com/150",
+    "rating": {"rate": 4.0, "count": 60}
+  }
+]

@@ -24,7 +24,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Home'),
-            onTap: () => _go(context, '/'),
+            onTap: () => _go(context, '/home'),
           ),
           ListTile(
             title: const Text('Second Page'),
