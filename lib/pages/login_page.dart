@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
         // Redirige vers l'accueil
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
       // 🔥 AJOUT : Gestion des erreurs spécifiques Firebase

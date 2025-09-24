@@ -78,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         );
         // 🔥 BONUS : L'utilisateur est automatiquement connecté après inscription
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/login');
       }
     } on FirebaseAuthException catch (e) {
       // Gestion des erreurs Firebase
