@@ -12,7 +12,12 @@
           "package_name": "commerce.flutter.flutter_commerce"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "100846685226-79n63ve745g0i16938if0qiin076tdv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAPba4bhlsk1TdoN79tRjUqvRfKizE4YFQ"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100846685226-79n63ve745g0i16938if0qiin076tdv1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

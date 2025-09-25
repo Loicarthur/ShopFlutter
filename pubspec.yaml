@@ -19,6 +19,11 @@ dependencies:
   provider: ^6.1.2              # State management MVVM
   http: ^1.2.1                  # Pour les appels API
   cached_network_image: ^3.3.1  # Images optimisées
+  shared_preferences: ^2.3.2    # Stockage local des commandes
+  uuid: ^4.4.2                  # Génération d'ID commande
+  flutter_stripe: ^12.0.2       # Paiement Stripe
+  # go_router: ^14.2.0            # Navigation déclarative avec guards (retiré)
+  # share_plus: ^10.0.2           # Partage Android/iOS/Web (retiré)
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

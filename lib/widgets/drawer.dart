@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -37,6 +38,11 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _go(context, '/products'),
           ),
           ListTile(
+            leading: const Icon(Icons.receipt_long, color: Colors.indigo),
+            title: const Text('Mes commandes'),
+            onTap: () => _go(context, '/orders'),
+          ),
+          ListTile(
             title: const Text('Third Page'),
             onTap: () => _go(context, '/third'),
           ),
@@ -49,6 +55,15 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.person_add, color: Colors.blue),
             title: const Text('S\'inscrire'),
             onTap: () => _go(context, '/register'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Déconnexion'),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/login', (route) => false);
+            },
           ),
         ],
       ),

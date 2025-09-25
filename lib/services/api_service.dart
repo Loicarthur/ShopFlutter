@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/product.dart';
+import '../repositories/product_repository.dart';
 
 class ApiService {
   static const String baseUrl = 'https://fakestoreapi.com';
@@ -19,7 +20,9 @@ class ApiService {
         throw Exception('Erreur serveur : ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Impossible de charger les produits : $e');
+      // Fallback local: en cas d'échec réseau, on lit les assets
+      final local = await ProductRepository().fetchProducts();
+      return local;
     }
   }
 }

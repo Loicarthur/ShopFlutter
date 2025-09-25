@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../viewmodels/products_viewmodel.dart';
 import '../widgets/drawer.dart';
+import '../widgets/cart_icon_button.dart';
 import '../models/product.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ProductsPageState extends State<ProductsPage> {
         title: const Text('Produits'),
         backgroundColor: Colors.blue[600],
         foregroundColor: Colors.white,
+        actions: const [CartIconButton()],
       ),
       drawer: const AppDrawer(),
       body: Consumer<ProductsViewModel>(
@@ -96,15 +98,18 @@ class _ProductsPageState extends State<ProductsPage> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProductImage(product.image),
-            const SizedBox(width: 16),
-            Expanded(child: _buildProductInfo(product)),
-          ],
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, '/product/${product.id}', arguments: product),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProductImage(product.image),
+              const SizedBox(width: 16),
+              Expanded(child: _buildProductInfo(product)),
+            ],
+          ),
         ),
       ),
     );
