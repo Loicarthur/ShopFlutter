@@ -1,0 +1,48 @@
+name: Flutter Web CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0" # adapte selon ta version
+          channel: stable
+
+      - name: Check formatting
+        run: flutter format --set-exit-if-changed .
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      - name: Check coverage ≥ 50%
+        run: |
+          COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
+          echo "Coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 50" | bc -l) )); then
+            echo "❌ Coverage below 50%"
+            exit 1
+          fi
+
+      - name: Build Flutter Web
+        run: flutter build web --release
+
+      - name: Upload Web Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: flutter-web-build
+          path: build/web
