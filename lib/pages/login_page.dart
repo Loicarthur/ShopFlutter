@@ -30,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
   // 🔥 AJOUT : Fonction principale de connexion
   Future<void> _signIn() async {
     // Validation basique des champs
-    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.isEmpty) {
       setState(() {
         _errorMessage = 'Veuillez remplir tous les champs';
       });
@@ -173,14 +174,16 @@ class _LoginPageState extends State<LoginPage> {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: _isLoading ? null : _signIn, // Désactivé pendant chargement
+                onPressed:
+                    _isLoading ? null : _signIn, // Désactivé pendant chargement
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue[600],
                   foregroundColor: Colors.white,
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Se connecter', style: TextStyle(fontSize: 16)),
+                    : const Text('Se connecter',
+                        style: TextStyle(fontSize: 16)),
               ),
             ),
             const SizedBox(height: 16),

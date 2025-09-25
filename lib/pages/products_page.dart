@@ -11,11 +11,11 @@ class ProductsPage extends StatefulWidget {
   @override
   State<ProductsPage> createState() => _ProductsPageState();
 }
+
 // Le _ ici rend la classe d'état privée au fichier
 // Elle étend State<ProductsPage> : c’est le state associé au widget ProductsPage.
 // C’est ici qu’on gère le cycle de vie et les données locales à l’écran.
 class _ProductsPageState extends State<ProductsPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,6 @@ class _ProductsPageState extends State<ProductsPage> {
         // viewModel = instance de ProductsViewModel (accès à products, isLoading, etc.)
         // child = widget statique (non utilisé ici, mais utile si on veut éviter de rebuild un widget lourd)
         builder: (context, viewModel, child) {
-
           // 1️⃣ Cas où les données sont en train de charger
           if (viewModel.isLoading) {
             return const Center(
@@ -49,9 +48,11 @@ class _ProductsPageState extends State<ProductsPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error, size: 64, color: Colors.red), // icône d’erreur
+                  const Icon(Icons.error,
+                      size: 64, color: Colors.red), // icône d’erreur
                   const SizedBox(height: 16),
-                  Text(viewModel.errorMessage), // affiche le message d’erreur du ViewModel
+                  Text(viewModel
+                      .errorMessage), // affiche le message d’erreur du ViewModel
                   const SizedBox(height: 16),
                   ElevatedButton(
                     // si l’utilisateur clique : on relance loadProducts()
@@ -66,9 +67,11 @@ class _ProductsPageState extends State<ProductsPage> {
           // 3️⃣ Cas où les données ont bien été chargées
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: viewModel.products.length, // longueur de la liste des produits
+            itemCount:
+                viewModel.products.length, // longueur de la liste des produits
             itemBuilder: (context, index) {
-              final product = viewModel.products[index]; // on récupère un produit de la liste
+              final product = viewModel
+                  .products[index]; // on récupère un produit de la liste
 
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
@@ -76,7 +79,6 @@ class _ProductsPageState extends State<ProductsPage> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-
                       // 🖼️ Image du produit (avec cache et gestion erreur)
                       CachedNetworkImage(
                         imageUrl: product.image,
@@ -87,7 +89,8 @@ class _ProductsPageState extends State<ProductsPage> {
                           width: 80,
                           height: 80,
                           color: Colors.grey[200],
-                          child: const Center(child: CircularProgressIndicator()),
+                          child:
+                              const Center(child: CircularProgressIndicator()),
                         ),
                         errorWidget: (context, url, error) => Container(
                           width: 80,

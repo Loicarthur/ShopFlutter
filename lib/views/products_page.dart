@@ -99,7 +99,8 @@ class _ProductsPageState extends State<ProductsPage> {
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, '/product/${product.id}', arguments: product),
+        onTap: () => Navigator.pushNamed(context, '/product/${product.id}',
+            arguments: product),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

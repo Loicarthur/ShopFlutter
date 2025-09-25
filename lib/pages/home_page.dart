@@ -22,10 +22,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _featuredFuture = _repo.fetchProducts();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ShopFlutter'), actions: const [CartIconButton()]),
+      appBar: AppBar(
+          title: const Text('ShopFlutter'), actions: const [CartIconButton()]),
       drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
@@ -51,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
       children: const [
         Icon(Icons.storefront, size: 32, color: Colors.blue),
         SizedBox(width: 8),
-        Text('Bienvenue 👋', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text('Bienvenue 👋',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -63,11 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ignoring: true,
         child: TextField(
           decoration: InputDecoration(
-            hintText: 'Rechercher des produits... (taper pour ouvrir le catalogue)',
+            hintText:
+                'Rechercher des produits... (taper pour ouvrir le catalogue)',
             prefixIcon: const Icon(Icons.search),
             filled: true,
             fillColor: Colors.grey[100],
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none),
           ),
         ),
       ),
@@ -116,7 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Catégories', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const Text('Catégories',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -126,7 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(right: 8),
                       child: ActionChip(
                         label: Text(c),
-                        onPressed: () => Navigator.pushNamed(context, '/catalog'),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/catalog'),
                       ),
                     ))
                 .toList(),
@@ -140,7 +148,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('À la une', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const Text('À la une',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         SizedBox(
           height: 220,
@@ -150,7 +159,9 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+              if (snapshot.hasError ||
+                  !snapshot.hasData ||
+                  snapshot.data!.isEmpty) {
                 return const Center(child: Text('Aucun produit'));
               }
               final products = snapshot.data!.take(8).toList();
@@ -177,7 +188,11 @@ class _QuickAction extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
-  const _QuickAction({required this.icon, required this.label, required this.color, required this.onTap});
+  const _QuickAction(
+      {required this.icon,
+      required this.label,
+      required this.color,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -228,21 +243,28 @@ class _FeaturedCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2)),
+            BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2)),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12), topRight: Radius.circular(12)),
               child: CachedNetworkImage(
                 imageUrl: product.image,
                 height: 120,
                 width: 160,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Container(color: Colors.grey[200]),
-                errorWidget: (context, url, error) => Container(color: Colors.grey[200], child: const Icon(Icons.image_not_supported)),
+                placeholder: (context, url) =>
+                    Container(color: Colors.grey[200]),
+                errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.image_not_supported)),
               ),
             ),
             Padding(
@@ -250,9 +272,14 @@ class _FeaturedCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  Text(product.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                   const SizedBox(height: 6),
-                  Text(product.formattedPrice, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                  Text(product.formattedPrice,
+                      style: const TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),

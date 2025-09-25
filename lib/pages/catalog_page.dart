@@ -25,7 +25,8 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Catalogue'), actions: const [CartIconButton()]),
+      appBar: AppBar(
+          title: const Text('Catalogue'), actions: const [CartIconButton()]),
       body: FutureBuilder<List<Product>>(
         future: _products,
         builder: (context, snapshot) {
@@ -38,11 +39,14 @@ class _CatalogPageState extends State<CatalogPage> {
           }
 
           var products = snapshot.data!;
-          final categories = <String>{'Toutes', ...products.map((p) => p.category)}.toList();
-          products = products.where((p) =>
-              (_category == 'Toutes' || p.category == _category) &&
-              (_query.isEmpty || p.title.toLowerCase().contains(_query.toLowerCase()))
-          ).toList();
+          final categories =
+              <String>{'Toutes', ...products.map((p) => p.category)}.toList();
+          products = products
+              .where((p) =>
+                  (_category == 'Toutes' || p.category == _category) &&
+                  (_query.isEmpty ||
+                      p.title.toLowerCase().contains(_query.toLowerCase())))
+              .toList();
 
           return Column(
             children: [
@@ -64,8 +68,12 @@ class _CatalogPageState extends State<CatalogPage> {
                     const SizedBox(width: 8),
                     DropdownButton<String>(
                       value: _category,
-                      items: categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
-                      onChanged: (v) => setState(() => _category = v ?? 'Toutes'),
+                      items: categories
+                          .map(
+                              (c) => DropdownMenuItem(value: c, child: Text(c)))
+                          .toList(),
+                      onChanged: (v) =>
+                          setState(() => _category = v ?? 'Toutes'),
                     ),
                   ],
                 ),
@@ -79,7 +87,8 @@ class _CatalogPageState extends State<CatalogPage> {
                     return Card(
                       margin: const EdgeInsets.all(8),
                       child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         leading: SizedBox(
                           width: 56,
                           height: 56,
@@ -92,10 +101,13 @@ class _CatalogPageState extends State<CatalogPage> {
                             ),
                           ),
                         ),
-                        title: Text(product.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-                        subtitle: Text('${product.formattedPrice} • ${product.starsDisplay}'),
+                        title: Text(product.title,
+                            maxLines: 1, overflow: TextOverflow.ellipsis),
+                        subtitle: Text(
+                            '${product.formattedPrice} • ${product.starsDisplay}'),
                         onTap: () {
-                          Navigator.pushNamed(context, '/product/${product.id}', arguments: product);
+                          Navigator.pushNamed(context, '/product/${product.id}',
+                              arguments: product);
                         },
                       ),
                     );

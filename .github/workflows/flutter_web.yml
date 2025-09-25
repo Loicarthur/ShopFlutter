@@ -17,18 +17,26 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.19.0" # adapte selon ta version
+          flutter-version: "3.19.0" # adapte selon ta version locale
           channel: stable
 
+      # 1. Vérification du formatage avec dart format
       - name: Check formatting
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
+      # 2. Analyse statique
       - name: Analyze code
         run: flutter analyze
 
+      # 3. Tests avec couverture
       - name: Run tests with coverage
         run: flutter test --coverage
 
+      # 4. Installer lcov pour analyser la couverture
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
+
+      # 5. Vérifier que la couverture >= 50%
       - name: Check coverage ≥ 50%
         run: |
           COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
@@ -38,9 +46,11 @@ jobs:
             exit 1
           fi
 
+      # 6. Build Flutter Web
       - name: Build Flutter Web
         run: flutter build web --release
 
+      # 7. Sauvegarder le build en artefact
       - name: Upload Web Artifact
         uses: actions/upload-artifact@v3
         with:

@@ -18,8 +18,7 @@ class CartViewModel extends ChangeNotifier {
   double get totalAmount =>
       _items.fold(0, (sum, item) => sum + item.totalPrice);
 
-  int get totalItemsCount =>
-      _items.fold(0, (sum, item) => sum + item.quantity);
+  int get totalItemsCount => _items.fold(0, (sum, item) => sum + item.quantity);
 
   void add(Product product) {
     final existing = _items.indexWhere((i) => i.product.id == product.id);

@@ -6,7 +6,7 @@ import 'firebase_options.dart'; // FlutterFire CLI
 
 // ViewModels
 import 'viewmodels/products_viewmodel.dart';
-import 'viewmodels/cart_viewmodel.dart'; // <-- ajouté
+import 'viewmodels/cart_viewmodel.dart';
 
 // Pages
 import 'views/products_page.dart';
@@ -16,10 +16,14 @@ import 'pages/register_page.dart';
 import 'pages/catalog_page.dart';
 import 'pages/product_detail_page.dart';
 import 'pages/orders_page.dart';
+import 'pages/cart_page.dart';
 import 'models/product.dart';
+
+// ⚡ Détection de plateforme sécurisée
+// Import conditionnel pour dart:io uniquement si ce n’est pas le web
+// ignore: dart.library.io
 import 'dart:io' show Platform;
 
-// ⚡ Classe utilitaire pour détecter l'OS de façon sécurisée
 class PlatformUtils {
   static String get operatingSystem {
     if (kIsWeb) return "Web";
@@ -35,7 +39,6 @@ class PlatformUtils {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🔹 Initialisation Firebase selon la plateforme
   await Firebase.initializeApp(
     options: kIsWeb
         ? DefaultFirebaseOptions.web
@@ -53,7 +56,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsViewModel()),
-        ChangeNotifierProvider(create: (_) => CartViewModel()), // <-- ajouté
+        ChangeNotifierProvider(create: (_) => CartViewModel()),
       ],
       child: MaterialApp(
         title: 'FlutCom',
@@ -61,49 +64,44 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-
-        // Page de démarrage
         home: const MyHomePage(),
-
-        // Routes statiques
         routes: {
-          '/login': (context) => const LoginPage(),
-          '/register': (context) => const RegisterPage(),
-          '/home': (context) => const MyHomePage(),
-          '/products': (context) => const ProductsPage(),
-          '/catalog': (context) => const CatalogPage(),
-          '/orders': (context) => const OrdersPage(),
+          '/login': (_) => const LoginPage(),
+          '/register': (_) => const RegisterPage(),
+          '/home': (_) => const MyHomePage(),
+          '/products': (_) => const ProductsPage(),
+          '/catalog': (_) => const CatalogPage(),
+          '/orders': (_) => const OrdersPage(),
+          '/cart': (_) => const CartPage(), // ← Ajout de la route panier
         },
-
-        // Routes dynamiques pour les détails produit
         onGenerateRoute: (settings) {
           final name = settings.name ?? '';
-          final productMatch = RegExp(r'^/product/(\d+)$').firstMatch(name);
-          if (productMatch != null) {
-            final id = int.parse(productMatch.group(1)!);
+          final match = RegExp(r'^/product/(\d+)$').firstMatch(name);
+
+          if (match != null) {
+            final id = int.parse(match.group(1)!);
+            final product = settings.arguments is Product
+                ? settings.arguments as Product
+                : null;
+
             return MaterialPageRoute(
               builder: (_) => ProductDetailPage(
                 productId: id,
-                product: settings.arguments is Product
-                    ? settings.arguments as Product
-                    : null,
+                product: product,
               ),
               settings: settings,
             );
           }
+
           return null;
         },
-
-        // Route inconnue
-        onUnknownRoute: (settings) {
-          return MaterialPageRoute(
-            builder: (context) => Scaffold(
-              body: Center(
-                child: Text("Route inconnue : ${settings.name}"),
-              ),
+        onUnknownRoute: (settings) => MaterialPageRoute(
+          builder: (_) => Scaffold(
+            body: Center(
+              child: Text("Route inconnue : ${settings.name}"),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

@@ -73,7 +73,8 @@ class _RegisterPageState extends State<RegisterPage> {
         // Message de succès
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Inscription réussie ! Vous êtes maintenant connecté.'),
+            content:
+                Text('Inscription réussie ! Vous êtes maintenant connecté.'),
             backgroundColor: Colors.green,
           ),
         );

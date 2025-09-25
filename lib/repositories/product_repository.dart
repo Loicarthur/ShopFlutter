@@ -7,7 +7,9 @@ class ProductRepository {
   Future<List<Product>> fetchProducts() async {
     final data = await rootBundle.loadString('assets/products.json');
     final jsonList = json.decode(data) as List<dynamic>;
-    return jsonList.map((p) => Product.fromJson(p as Map<String, dynamic>)).toList();
+    return jsonList
+        .map((p) => Product.fromJson(p as Map<String, dynamic>))
+        .toList();
   }
 
   // Récupère un produit par son id
