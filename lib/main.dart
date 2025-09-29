@@ -20,19 +20,17 @@ import 'pages/cart_page.dart';
 import 'pages/checkout_page.dart';
 import 'models/product.dart';
 
-// ⚡ Détection de plateforme sécurisée
-// Import conditionnel pour dart:io uniquement si ce n’est pas le web
-// ignore: dart.library.io
+// Platform utils
 import 'dart:io' show Platform;
 
 class PlatformUtils {
   static String get operatingSystem {
     if (kIsWeb) return "Web";
-    if (Platform.isAndroid) return "Android";
-    if (Platform.isIOS) return "iOS";
-    if (Platform.isWindows) return "Windows";
-    if (Platform.isMacOS) return "macOS";
-    if (Platform.isLinux) return "Linux";
+    if (!kIsWeb && Platform.isAndroid) return "Android";
+    if (!kIsWeb && Platform.isIOS) return "iOS";
+    if (!kIsWeb && Platform.isWindows) return "Windows";
+    if (!kIsWeb && Platform.isMacOS) return "macOS";
+    if (!kIsWeb && Platform.isLinux) return "Linux";
     return "Unknown";
   }
 }
@@ -77,24 +75,17 @@ class MyApp extends StatelessWidget {
           '/checkout': (_) => const CheckoutPage(),
         },
         onGenerateRoute: (settings) {
-          final name = settings.name ?? '';
-          final match = RegExp(r'^/product/(\d+)$').firstMatch(name);
-
-          if (match != null) {
-            final id = int.parse(match.group(1)!);
-            final product = settings.arguments is Product
-                ? settings.arguments as Product
-                : null;
-
-            return MaterialPageRoute(
-              builder: (_) => ProductDetailPage(
-                productId: id,
-                product: product,
-              ),
-              settings: settings,
-            );
+          final uri = Uri.parse(settings.name ?? '');
+          if (uri.pathSegments.isNotEmpty && uri.pathSegments[0] == 'product') {
+            final id = int.tryParse(uri.pathSegments[1] ?? '');
+            final product = settings.arguments as Product?;
+            if (id != null) {
+              return MaterialPageRoute(
+                builder: (_) => ProductDetailPage(productId: id, product: product),
+                settings: settings,
+              );
+            }
           }
-
           return null;
         },
         onUnknownRoute: (settings) => MaterialPageRoute(
