@@ -17,7 +17,7 @@ jobs:
 
       # 1. Setup Java (nécessaire pour Android/Flutter)
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
@@ -61,7 +61,7 @@ jobs:
 
       # 9. Sauvegarder le build en artefact
       - name: Upload Web Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: flutter-web-build
           path: build/web
