@@ -69,7 +69,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/orders');
   }
-  
+
   String _getPaymentMethodName(PaymentMethod method) {
     switch (method) {
       case PaymentMethod.creditCard:
@@ -173,7 +173,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         child: CircularProgressIndicator(
                             strokeWidth: 3, color: Colors.white),
                       )
-                    : const Text('Payer maintenant', style: TextStyle(fontSize: 18)),
+                    : const Text('Payer maintenant',
+                        style: TextStyle(fontSize: 18)),
               ),
             ),
           ],
