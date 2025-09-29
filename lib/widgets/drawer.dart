@@ -28,11 +28,6 @@ class AppDrawer extends StatelessWidget {
             onTap: () => _go(context, '/home'),
           ),
           ListTile(
-            title: const Text('Second Page'),
-            onTap: () => _go(context, '/second'),
-          ),
-          // Ajoute cette ligne dans la section Navigation de ton drawer :
-          ListTile(
             leading: const Icon(Icons.shopping_bag, color: Colors.orange),
             title: const Text('Produits'),
             onTap: () => _go(context, '/products'),
@@ -41,10 +36,6 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.receipt_long, color: Colors.indigo),
             title: const Text('Mes commandes'),
             onTap: () => _go(context, '/orders'),
-          ),
-          ListTile(
-            title: const Text('Third Page'),
-            onTap: () => _go(context, '/third'),
           ),
           ListTile(
             leading: const Icon(Icons.login, color: Colors.green),

@@ -5,6 +5,8 @@ import '../viewmodels/cart_viewmodel.dart';
 import '../models/order.dart';
 import '../repositories/order_repository.dart';
 
+enum PaymentMethod { creditCard, paypal, applePay }
+
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
 
@@ -13,8 +15,8 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  PaymentMethod _selectedMethod = PaymentMethod.creditCard;
   bool _processing = false;
-  String _selectedPayment = 'Carte bancaire';
   final OrderRepository _orderRepo = OrderRepository();
 
   // Simuler un paiement
@@ -67,71 +69,79 @@ class _CheckoutPageState extends State<CheckoutPage> {
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/orders');
   }
+  
+  String _getPaymentMethodName(PaymentMethod method) {
+    switch (method) {
+      case PaymentMethod.creditCard:
+        return 'Carte de crédit';
+      case PaymentMethod.paypal:
+        return 'PayPal';
+      case PaymentMethod.applePay:
+        return 'Apple Pay';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Checkout')),
+      appBar: AppBar(title: const Text('Méthode de paiement')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Récapitulatif',
+              'Choisissez votre méthode de paiement',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: cart.items.isEmpty
-                  ? const Center(child: Text('Votre panier est vide'))
-                  : ListView.builder(
-                      itemCount: cart.items.length,
-                      itemBuilder: (context, index) {
-                        final item = cart.items[index];
-                        return ListTile(
-                          title: Text(
-                            item.product.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                              '${item.quantity} x ${item.product.formattedPrice}'),
-                          trailing:
-                              Text('${item.totalPrice.toStringAsFixed(2)} €'),
-                        );
-                      },
-                    ),
-            ),
             const SizedBox(height: 16),
-            const Text(
-              'Mode de paiement',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            DropdownButton<String>(
-              value: _selectedPayment,
-              items: <String>['Carte bancaire', 'PayPal', 'Virement']
-                  .map((mode) => DropdownMenuItem(
-                        value: mode,
-                        child: Text(mode),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) setState(() => _selectedPayment = value);
+            RadioListTile<PaymentMethod>(
+              title: const Text('Carte de crédit'),
+              value: PaymentMethod.creditCard,
+              groupValue: _selectedMethod,
+              onChanged: (PaymentMethod? value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedMethod = value;
+                  });
+                }
               },
             ),
-            const SizedBox(height: 16),
+            RadioListTile<PaymentMethod>(
+              title: const Text('PayPal'),
+              value: PaymentMethod.paypal,
+              groupValue: _selectedMethod,
+              onChanged: (PaymentMethod? value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedMethod = value;
+                  });
+                }
+              },
+            ),
+            RadioListTile<PaymentMethod>(
+              title: const Text('Apple Pay'),
+              value: PaymentMethod.applePay,
+              groupValue: _selectedMethod,
+              onChanged: (PaymentMethod? value) {
+                if (value != null) {
+                  setState(() {
+                    _selectedMethod = value;
+                  });
+                }
+              },
+            ),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Total', style: TextStyle(fontSize: 16)),
+                const Text('Total à payer', style: TextStyle(fontSize: 18)),
                 Text(
                   '${cart.totalAmount.toStringAsFixed(2)} €',
                   style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.green),
                 ),
@@ -141,17 +151,29 @@ class _CheckoutPageState extends State<CheckoutPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
                 onPressed: _processing || cart.items.isEmpty
                     ? null
-                    : () => _handlePayment(cart),
+                    : () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Paiement avec ${_getPaymentMethodName(_selectedMethod)}...'),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                        _handlePayment(cart);
+                      },
                 child: _processing
                     ? const SizedBox(
-                        width: 22,
-                        height: 22,
+                        width: 24,
+                        height: 24,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                            strokeWidth: 3, color: Colors.white),
                       )
-                    : const Text('Payer'),
+                    : const Text('Payer maintenant', style: TextStyle(fontSize: 18)),
               ),
             ),
           ],

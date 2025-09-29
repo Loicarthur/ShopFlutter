@@ -17,6 +17,7 @@ import 'pages/catalog_page.dart';
 import 'pages/product_detail_page.dart';
 import 'pages/orders_page.dart';
 import 'pages/cart_page.dart';
+import 'pages/checkout_page.dart';
 import 'models/product.dart';
 
 // ⚡ Détection de plateforme sécurisée
@@ -72,7 +73,8 @@ class MyApp extends StatelessWidget {
           '/products': (_) => const ProductsPage(),
           '/catalog': (_) => const CatalogPage(),
           '/orders': (_) => const OrdersPage(),
-          '/cart': (_) => const CartPage(), // ← Ajout de la route panier
+          '/cart': (_) => const CartPage(),
+          '/checkout': (_) => const CheckoutPage(),
         },
         onGenerateRoute: (settings) {
           final name = settings.name ?? '';
