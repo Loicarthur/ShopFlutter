@@ -13,7 +13,7 @@ jobs:
     steps:
       # 0. Checkout du code source
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 1. Setup Java (nécessaire pour Android/Flutter)
       - name: Setup Java
