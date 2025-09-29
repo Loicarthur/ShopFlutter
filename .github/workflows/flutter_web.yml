@@ -2,9 +2,9 @@ name: Flutter Web CI/CD
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   build:
@@ -30,13 +30,15 @@ jobs:
           channel: stable
 
       # 3. Vérification stricte du formatage
-      - name: Check formatting
+      - name: Check Dart formatting
         run: |
           echo "🔹 Vérification du formatage des fichiers Dart..."
           if ! dart format --set-exit-if-changed .; then
             echo "❌ Certains fichiers ne sont pas correctement formatés."
-            echo "Veuillez lancer 'dart format .' localement et commit/push vos changements."
+            echo "💡 Astuce : lancez 'dart format .' localement, puis commit/push vos changements."
             exit 1
+          else
+            echo "✅ Tous les fichiers Dart sont correctement formatés."
           fi
 
       # 4. Analyse statique
@@ -55,10 +57,12 @@ jobs:
       - name: Check coverage ≥ 50%
         run: |
           COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
-          echo "Coverage: $COVERAGE%"
+          echo "📊 Coverage: $COVERAGE%"
           if (( $(echo "$COVERAGE < 50" | bc -l) )); then
-            echo "❌ Coverage below 50%"
+            echo "❌ Couverture inférieure à 50%"
             exit 1
+          else
+            echo "✅ Couverture suffisante (≥50%)"
           fi
 
       # 8. Build Flutter Web
