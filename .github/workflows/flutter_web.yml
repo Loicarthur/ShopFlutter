@@ -29,9 +29,15 @@ jobs:
           flutter-version: "3.19.0"
           channel: stable
 
-      # 3. Formatage du code (corrige automatiquement)
-      - name: Format code
-        run: dart format .
+      # 3. Vérification stricte du formatage
+      - name: Check formatting
+        run: |
+          echo "🔹 Vérification du formatage des fichiers Dart..."
+          if ! dart format --set-exit-if-changed .; then
+            echo "❌ Certains fichiers ne sont pas correctement formatés."
+            echo "Veuillez lancer 'dart format .' localement et commit/push vos changements."
+            exit 1
+          fi
 
       # 4. Analyse statique
       - name: Analyze code
