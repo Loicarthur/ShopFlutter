@@ -94,10 +94,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.grey),
-                        color: _selectedMethod == method ? Colors.blue : Colors.transparent,
+                        color: _selectedMethod == method
+                            ? Colors.blue
+                            : Colors.transparent,
                       ),
                       child: _selectedMethod == method
-                          ? const Icon(Icons.check, size: 16, color: Colors.white)
+                          ? const Icon(Icons.check,
+                              size: 16, color: Colors.white)
                           : null,
                     ),
                   ),
