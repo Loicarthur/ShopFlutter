@@ -23,7 +23,9 @@ void main() {
       quantity: 2,
     );
 
-    test('OrderItem constructor should create order item with correct properties', () {
+    test(
+        'OrderItem constructor should create order item with correct properties',
+        () {
       expect(sampleOrderItem.productId, equals(1));
       expect(sampleOrderItem.title, equals('Test Product'));
       expect(sampleOrderItem.image, equals('https://example.com/image.jpg'));
@@ -33,7 +35,7 @@ void main() {
 
     test('lineTotal should calculate correctly', () {
       expect(sampleOrderItem.lineTotal, equals(51.98));
-      
+
       // Test avec quantité 1
       final singleItem = OrderItem(
         productId: 2,
@@ -43,7 +45,7 @@ void main() {
         quantity: 1,
       );
       expect(singleItem.lineTotal, equals(10.0));
-      
+
       // Test avec quantité 0
       final zeroItem = OrderItem(
         productId: 3,
@@ -57,7 +59,7 @@ void main() {
 
     test('OrderItem.fromProduct should create order item from product', () {
       final orderItem = OrderItem.fromProduct(sampleProduct, 3);
-      
+
       expect(orderItem.productId, equals(sampleProduct.id));
       expect(orderItem.title, equals(sampleProduct.title));
       expect(orderItem.image, equals(sampleProduct.image));
@@ -68,7 +70,7 @@ void main() {
 
     test('OrderItem toJson should serialize correctly', () {
       final json = sampleOrderItem.toJson();
-      
+
       expect(json['productId'], equals(1));
       expect(json['title'], equals('Test Product'));
       expect(json['image'], equals('https://example.com/image.jpg'));
@@ -84,9 +86,9 @@ void main() {
         'unitPrice': 25.99,
         'quantity': 2,
       };
-      
+
       final orderItem = OrderItem.fromJson(json);
-      
+
       expect(orderItem.productId, equals(1));
       expect(orderItem.title, equals('Test Product'));
       expect(orderItem.image, equals('https://example.com/image.jpg'));
@@ -97,7 +99,7 @@ void main() {
     test('OrderItem JSON serialization roundtrip should work', () {
       final json = sampleOrderItem.toJson();
       final deserializedItem = OrderItem.fromJson(json);
-      
+
       expect(deserializedItem.productId, equals(sampleOrderItem.productId));
       expect(deserializedItem.title, equals(sampleOrderItem.title));
       expect(deserializedItem.image, equals(sampleOrderItem.image));
@@ -141,13 +143,13 @@ void main() {
 
     test('Order toJson should serialize correctly', () {
       final json = sampleOrder.toJson();
-      
+
       expect(json['id'], equals('order-123'));
       expect(json['createdAt'], equals('2024-01-15T10:30:00.000'));
       expect(json['items'], isA<List>());
       expect(json['items'].length, equals(2));
       expect(json['totalAmount'], equals(35.0));
-      
+
       // Vérifier le premier item
       final firstItem = json['items'][0];
       expect(firstItem['productId'], equals(1));
@@ -169,9 +171,9 @@ void main() {
         ],
         'totalAmount': 20.0,
       };
-      
+
       final order = Order.fromJson(json);
-      
+
       expect(order.id, equals('order-456'));
       expect(order.createdAt, equals(DateTime(2024, 2, 20, 14, 45, 30)));
       expect(order.items.length, equals(1));
@@ -183,17 +185,17 @@ void main() {
     test('Order JSON serialization roundtrip should work', () {
       final json = sampleOrder.toJson();
       final deserializedOrder = Order.fromJson(json);
-      
+
       expect(deserializedOrder.id, equals(sampleOrder.id));
       expect(deserializedOrder.createdAt, equals(sampleOrder.createdAt));
       expect(deserializedOrder.items.length, equals(sampleOrder.items.length));
       expect(deserializedOrder.totalAmount, equals(sampleOrder.totalAmount));
-      
+
       // Vérifier les items
       for (int i = 0; i < sampleOrder.items.length; i++) {
         final original = sampleOrder.items[i];
         final deserialized = deserializedOrder.items[i];
-        
+
         expect(deserialized.productId, equals(original.productId));
         expect(deserialized.title, equals(original.title));
         expect(deserialized.image, equals(original.image));
@@ -209,14 +211,14 @@ void main() {
         items: [],
         totalAmount: 0.0,
       );
-      
+
       expect(emptyOrder.items.isEmpty, isTrue);
       expect(emptyOrder.totalAmount, equals(0.0));
-      
+
       // Test de sérialisation
       final json = emptyOrder.toJson();
       final deserializedOrder = Order.fromJson(json);
-      
+
       expect(deserializedOrder.items.isEmpty, isTrue);
       expect(deserializedOrder.totalAmount, equals(0.0));
     });

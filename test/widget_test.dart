@@ -5,7 +5,8 @@ import 'package:vraiauth/main.dart';
 
 void main() {
   group('Tests d\'intégration de l\'application', () {
-    testWidgets('App should start and display home page', (WidgetTester tester) async {
+    testWidgets('App should start and display home page',
+        (WidgetTester tester) async {
       // Construire l'application
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
@@ -35,7 +36,8 @@ void main() {
       expect(find.byType(Drawer), findsNothing);
     });
 
-    testWidgets('Navigation should work via Drawer', (WidgetTester tester) async {
+    testWidgets('Navigation should work via Drawer',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -64,7 +66,8 @@ void main() {
       }
     });
 
-    testWidgets('App should display main UI elements', (WidgetTester tester) async {
+    testWidgets('App should display main UI elements',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 
@@ -82,7 +85,8 @@ void main() {
       expect(find.byKey(const Key('search_field')), findsOneWidget);
     });
 
-    testWidgets('App should handle search interaction', (WidgetTester tester) async {
+    testWidgets('App should handle search interaction',
+        (WidgetTester tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.pumpAndSettle();
 

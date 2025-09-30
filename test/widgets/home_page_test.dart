@@ -20,13 +20,15 @@ void main() {
       return MultiProvider(
         providers: [
           ChangeNotifierProvider<CartViewModel>.value(value: cartViewModel),
-          ChangeNotifierProvider<ProductsViewModel>.value(value: productsViewModel),
+          ChangeNotifierProvider<ProductsViewModel>.value(
+              value: productsViewModel),
         ],
         child: MaterialApp(
           home: const MyHomePage(),
           routes: {
             '/catalog': (context) => const Scaffold(body: Text('Catalog Page')),
-            '/products': (context) => const Scaffold(body: Text('Products Page')),
+            '/products': (context) =>
+                const Scaffold(body: Text('Products Page')),
             '/cart': (context) => const Scaffold(body: Text('Cart Page')),
             '/orders': (context) => const Scaffold(body: Text('Orders Page')),
           },
@@ -34,14 +36,15 @@ void main() {
       );
     }
 
-    testWidgets('should display app bar with title and cart icon', (WidgetTester tester) async {
+    testWidgets('should display app bar with title and cart icon',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       // Vérifier l'AppBar
       expect(find.byType(AppBar), findsOneWidget);
       expect(find.text('ShopFlutter'), findsOneWidget);
-      
+
       // Vérifier la présence du bouton panier (CartIconButton)
       expect(find.byType(IconButton), findsWidgets);
     });
@@ -54,12 +57,16 @@ void main() {
       expect(find.byIcon(Icons.storefront), findsOneWidget);
     });
 
-    testWidgets('should display search bar with hint text', (WidgetTester tester) async {
+    testWidgets('should display search bar with hint text',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
       expect(find.byType(TextField), findsOneWidget);
-      expect(find.text('Rechercher des produits... (taper pour ouvrir le catalogue)'), findsOneWidget);
+      expect(
+          find.text(
+              'Rechercher des produits... (taper pour ouvrir le catalogue)'),
+          findsOneWidget);
       expect(find.byIcon(Icons.search), findsOneWidget);
     });
 
@@ -78,7 +85,8 @@ void main() {
       expect(find.byIcon(Icons.receipt_long), findsOneWidget);
     });
 
-    testWidgets('should display categories section', (WidgetTester tester) async {
+    testWidgets('should display categories section',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -94,12 +102,13 @@ void main() {
       await tester.pump();
 
       expect(find.text('À la une'), findsOneWidget);
-      
+
       // Initialement, on devrait voir un loading indicator
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('search bar tap should navigate to catalog', (WidgetTester tester) async {
+    testWidgets('search bar tap should navigate to catalog',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -111,7 +120,8 @@ void main() {
       expect(find.text('Catalog Page'), findsOneWidget);
     });
 
-    testWidgets('quick action buttons should navigate correctly', (WidgetTester tester) async {
+    testWidgets('quick action buttons should navigate correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -148,7 +158,8 @@ void main() {
       expect(find.text('Orders Page'), findsOneWidget);
     });
 
-    testWidgets('category chips should navigate to catalog', (WidgetTester tester) async {
+    testWidgets('category chips should navigate to catalog',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -171,20 +182,22 @@ void main() {
       expect(find.byType(Drawer), findsOneWidget);
     });
 
-    testWidgets('should handle featured products loading state', (WidgetTester tester) async {
+    testWidgets('should handle featured products loading state',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
-      
+
       // État de chargement initial
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      
+
       // Attendre que le FutureBuilder se termine
       await tester.pumpAndSettle();
-      
+
       // Le loading indicator devrait avoir disparu
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
-    testWidgets('should display "Aucun produit" when no featured products', (WidgetTester tester) async {
+    testWidgets('should display "Aucun produit" when no featured products',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pumpAndSettle();
 
@@ -199,16 +212,17 @@ void main() {
 
       // Vérifier que la page est scrollable
       expect(find.byType(ListView), findsOneWidget);
-      
+
       // Tester le scroll
       await tester.drag(find.byType(ListView), const Offset(0, -200));
       await tester.pump();
-      
+
       // La page devrait toujours être visible après le scroll
       expect(find.text('Bienvenue 👋'), findsOneWidget);
     });
 
-    testWidgets('quick actions should have correct colors', (WidgetTester tester) async {
+    testWidgets('quick actions should have correct colors',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -219,7 +233,8 @@ void main() {
       expect(find.byIcon(Icons.receipt_long), findsOneWidget);
     });
 
-    testWidgets('should handle safe area correctly', (WidgetTester tester) async {
+    testWidgets('should handle safe area correctly',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
       await tester.pump();
 
@@ -229,9 +244,10 @@ void main() {
   });
 
   group('_QuickAction Widget Tests', () {
-    testWidgets('should display icon, label and respond to tap', (WidgetTester tester) async {
+    testWidgets('should display icon, label and respond to tap',
+        (WidgetTester tester) async {
       bool tapped = false;
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -245,9 +261,9 @@ void main() {
           ),
         ),
       );
-      
+
       await tester.pump();
-      
+
       // Les QuickActions sont testées indirectement via MyHomePage
       expect(find.text('Catalogue'), findsOneWidget);
       expect(find.byIcon(Icons.list_alt), findsOneWidget);

@@ -11,10 +11,7 @@ void main() {
       'description': 'A test product description',
       'category': 'electronics',
       'image': 'https://example.com/image.jpg',
-      'rating': {
-        'rate': 4.5,
-        'count': 120
-      }
+      'rating': {'rate': 4.5, 'count': 120}
     };
 
     final sampleRating = Rating(rate: 4.5, count: 120);
@@ -28,7 +25,8 @@ void main() {
       rating: sampleRating,
     );
 
-    test('Product constructor should create product with correct properties', () {
+    test('Product constructor should create product with correct properties',
+        () {
       expect(sampleProduct.id, equals(1));
       expect(sampleProduct.title, equals('Test Product'));
       expect(sampleProduct.price, equals(29.99));
@@ -41,7 +39,7 @@ void main() {
 
     test('Product.fromJson should create product from JSON correctly', () {
       final product = Product.fromJson(sampleProductJson);
-      
+
       expect(product.id, equals(1));
       expect(product.title, equals('Test Product'));
       expect(product.price, equals(29.99));
@@ -54,7 +52,7 @@ void main() {
 
     test('formattedPrice should return correctly formatted price', () {
       expect(sampleProduct.formattedPrice, equals('29.99 €'));
-      
+
       // Test avec un prix entier
       final productWithIntPrice = Product(
         id: 2,
@@ -70,7 +68,7 @@ void main() {
 
     test('starsDisplay should return correctly formatted rating display', () {
       expect(sampleProduct.starsDisplay, equals('⭐ 4.5 (120)'));
-      
+
       // Test avec une note arrondie
       final productWithRoundRating = Product(
         id: 3,
@@ -88,7 +86,7 @@ void main() {
       // Test avec un int pour le prix
       final jsonWithIntPrice = Map<String, dynamic>.from(sampleProductJson);
       jsonWithIntPrice['price'] = 30;
-      
+
       final product = Product.fromJson(jsonWithIntPrice);
       expect(product.price, equals(30.0));
       expect(product.price, isA<double>());
@@ -98,32 +96,26 @@ void main() {
   group('Rating Model Tests', () {
     test('Rating constructor should create rating with correct properties', () {
       final rating = Rating(rate: 4.2, count: 85);
-      
+
       expect(rating.rate, equals(4.2));
       expect(rating.count, equals(85));
     });
 
     test('Rating.fromJson should create rating from JSON correctly', () {
-      final ratingJson = {
-        'rate': 3.8,
-        'count': 200
-      };
-      
+      final ratingJson = {'rate': 3.8, 'count': 200};
+
       final rating = Rating.fromJson(ratingJson);
-      
+
       expect(rating.rate, equals(3.8));
       expect(rating.count, equals(200));
     });
 
     test('Rating.fromJson should handle different number types', () {
       // Test avec un int pour rate
-      final ratingJson = {
-        'rate': 4,
-        'count': 150
-      };
-      
+      final ratingJson = {'rate': 4, 'count': 150};
+
       final rating = Rating.fromJson(ratingJson);
-      
+
       expect(rating.rate, equals(4.0));
       expect(rating.rate, isA<double>());
       expect(rating.count, equals(150));

@@ -41,7 +41,8 @@ void main() {
       }
     ];
 
-    test('fetchProducts should return list of products on successful response', () async {
+    test('fetchProducts should return list of products on successful response',
+        () async {
       // Arrange
       final responseBody = json.encode(sampleProductsJson);
       when(mockClient.get(
@@ -86,7 +87,8 @@ void main() {
         Uri.parse('${ApiService.baseUrl}/products'),
         headers: {'Content-Type': 'application/json'},
       )).thenAnswer((_) async {
-        await Future.delayed(const Duration(seconds: 15)); // Plus que le timeout
+        await Future.delayed(
+            const Duration(seconds: 15)); // Plus que le timeout
         return http.Response('', 200);
       });
 
@@ -141,20 +143,22 @@ void main() {
       )).called(1);
     });
 
-    test('fetchProducts should parse products correctly from complex JSON', () async {
+    test('fetchProducts should parse products correctly from complex JSON',
+        () async {
       // Arrange
       final complexProductJson = [
         {
           'id': 3,
           'title': 'Complex Product',
           'price': 99.99,
-          'description': 'A very detailed description with special characters: éàù',
+          'description':
+              'A very detailed description with special characters: éàù',
           'category': 'jewelery',
           'image': 'https://example.com/complex-image.jpg',
           'rating': {'rate': 4.9, 'count': 500}
         }
       ];
-      
+
       final responseBody = json.encode(complexProductJson);
       when(mockClient.get(any, headers: anyNamed('headers')))
           .thenAnswer((_) async => http.Response(responseBody, 200));
@@ -180,7 +184,7 @@ void main() {
 
     test('fetchProducts should handle server error codes', () async {
       final errorCodes = [400, 401, 403, 500, 502, 503];
-      
+
       for (final code in errorCodes) {
         // Arrange
         when(mockClient.get(any, headers: anyNamed('headers')))

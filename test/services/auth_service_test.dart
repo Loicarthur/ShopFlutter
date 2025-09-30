@@ -19,7 +19,7 @@ void main() {
       mockFirebaseAuth = MockFirebaseAuth();
       mockUser = MockUser();
       mockUserCredential = MockUserCredential();
-      
+
       // Obtenir l'instance singleton
       authService = AuthService.instance;
     });
@@ -27,17 +27,17 @@ void main() {
     test('AuthService should be singleton', () {
       final instance1 = AuthService.instance;
       final instance2 = AuthService.instance;
-      
+
       expect(identical(instance1, instance2), isTrue);
     });
 
     test('currentUser should return current user from FirebaseAuth', () {
       // Arrange
       when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
-      
+
       // Act
       final currentUser = authService.currentUser;
-      
+
       // Assert
       expect(currentUser, equals(mockUser));
     });
@@ -45,10 +45,10 @@ void main() {
     test('currentUser should return null when no user signed in', () {
       // Arrange
       when(mockFirebaseAuth.currentUser).thenReturn(null);
-      
+
       // Act
       final currentUser = authService.currentUser;
-      
+
       // Assert
       expect(currentUser, isNull);
     });
@@ -57,10 +57,10 @@ void main() {
       // Arrange
       final userStream = Stream<User?>.fromIterable([mockUser, null]);
       when(mockFirebaseAuth.authStateChanges()).thenAnswer((_) => userStream);
-      
+
       // Act
       final stream = authService.authStateChanges;
-      
+
       // Assert
       expect(stream, isA<Stream<User?>>());
     });

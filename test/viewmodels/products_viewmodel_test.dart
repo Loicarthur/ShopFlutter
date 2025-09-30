@@ -42,20 +42,21 @@ void main() {
     test('initial state should be correct', () {
       // Créer un viewModel sans appeler loadProducts automatiquement
       viewModel = ProductsViewModel();
-      
+
       expect(viewModel.products, isEmpty);
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.errorMessage, isEmpty);
       expect(viewModel.hasError, isFalse);
     });
 
-    testWidgets('loadProducts should set loading state correctly', (tester) async {
+    testWidgets('loadProducts should set loading state correctly',
+        (tester) async {
       // Mock successful API call
       when(mockApiService.fetchProducts())
           .thenAnswer((_) async => sampleProducts);
 
       viewModel = ProductsViewModel();
-      
+
       // Vérifier l'état initial
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.products, isEmpty);
@@ -63,14 +64,14 @@ void main() {
 
       // Simuler le chargement
       final loadFuture = viewModel.loadProducts();
-      
+
       // Pendant le chargement
       expect(viewModel.isLoading, isTrue);
       expect(viewModel.hasError, isFalse);
-      
+
       // Attendre la fin du chargement
       await loadFuture;
-      
+
       // Après le chargement
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.products.length, equals(2));
@@ -78,89 +79,91 @@ void main() {
       expect(viewModel.hasError, isFalse);
     });
 
-    testWidgets('loadProducts should handle API errors correctly', (tester) async {
+    testWidgets('loadProducts should handle API errors correctly',
+        (tester) async {
       // Mock API error
       when(mockApiService.fetchProducts())
           .thenThrow(Exception('Network error'));
 
       viewModel = ProductsViewModel();
-      
+
       await viewModel.loadProducts();
-      
+
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.products, isEmpty);
       expect(viewModel.hasError, isTrue);
-      expect(viewModel.errorMessage, equals('Impossible de charger les produits'));
+      expect(
+          viewModel.errorMessage, equals('Impossible de charger les produits'));
     });
 
-    testWidgets('loadProducts should prevent multiple simultaneous calls', (tester) async {
+    testWidgets('loadProducts should prevent multiple simultaneous calls',
+        (tester) async {
       // Mock slow API call
-      when(mockApiService.fetchProducts())
-          .thenAnswer((_) async {
-            await Future.delayed(const Duration(milliseconds: 100));
-            return sampleProducts;
-          });
+      when(mockApiService.fetchProducts()).thenAnswer((_) async {
+        await Future.delayed(const Duration(milliseconds: 100));
+        return sampleProducts;
+      });
 
       viewModel = ProductsViewModel();
-      
+
       // Lancer deux appels simultanés
       final future1 = viewModel.loadProducts();
       final future2 = viewModel.loadProducts();
-      
+
       await Future.wait([future1, future2]);
-      
+
       // Vérifier qu'un seul appel a été fait
       verify(mockApiService.fetchProducts()).called(1);
     });
 
-    testWidgets('loadProducts should clear previous error on new load', (tester) async {
+    testWidgets('loadProducts should clear previous error on new load',
+        (tester) async {
       viewModel = ProductsViewModel();
-      
+
       // Premier appel avec erreur
-      when(mockApiService.fetchProducts())
-          .thenThrow(Exception('First error'));
-      
+      when(mockApiService.fetchProducts()).thenThrow(Exception('First error'));
+
       await viewModel.loadProducts();
       expect(viewModel.hasError, isTrue);
       expect(viewModel.errorMessage, isNotEmpty);
-      
+
       // Deuxième appel réussi
       when(mockApiService.fetchProducts())
           .thenAnswer((_) async => sampleProducts);
-      
+
       await viewModel.loadProducts();
       expect(viewModel.hasError, isFalse);
       expect(viewModel.errorMessage, isEmpty);
       expect(viewModel.products, equals(sampleProducts));
     });
 
-    testWidgets('ViewModel should notify listeners on state changes', (tester) async {
+    testWidgets('ViewModel should notify listeners on state changes',
+        (tester) async {
       when(mockApiService.fetchProducts())
           .thenAnswer((_) async => sampleProducts);
 
       viewModel = ProductsViewModel();
-      
+
       int notificationCount = 0;
       viewModel.addListener(() {
         notificationCount++;
       });
 
       await viewModel.loadProducts();
-      
+
       // Devrait notifier au moins 2 fois : début loading, fin loading
       expect(notificationCount, greaterThanOrEqualTo(2));
     });
 
     testWidgets('hasError getter should work correctly', (tester) async {
       viewModel = ProductsViewModel();
-      
+
       expect(viewModel.hasError, isFalse);
-      
-      when(mockApiService.fetchProducts())
-          .thenThrow(Exception('Error'));
-      
+
+      when(mockApiService.fetchProducts()).thenThrow(Exception('Error'));
+
       await viewModel.loadProducts();
-      
+
       expect(viewModel.hasError, isTrue);
     });
 
@@ -170,9 +173,9 @@ void main() {
 
       viewModel = ProductsViewModel();
       await viewModel.loadProducts();
-      
+
       final products = viewModel.products;
-      
+
       // Les produits retournés devraient être les mêmes que les données mockées
       expect(products.length, equals(2));
       expect(products[0].id, equals(1));
@@ -180,12 +183,11 @@ void main() {
     });
 
     testWidgets('loadProducts should handle empty response', (tester) async {
-      when(mockApiService.fetchProducts())
-          .thenAnswer((_) async => <Product>[]);
+      when(mockApiService.fetchProducts()).thenAnswer((_) async => <Product>[]);
 
       viewModel = ProductsViewModel();
       await viewModel.loadProducts();
-      
+
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.products, isEmpty);
       expect(viewModel.hasError, isFalse);
@@ -197,8 +199,9 @@ void main() {
 
       viewModel = ProductsViewModel();
       await viewModel.loadProducts();
-      
-      expect(viewModel.errorMessage, equals('Impossible de charger les produits'));
+
+      expect(
+          viewModel.errorMessage, equals('Impossible de charger les produits'));
       expect(viewModel.hasError, isTrue);
     });
   });
