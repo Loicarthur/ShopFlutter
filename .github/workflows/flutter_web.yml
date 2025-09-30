@@ -29,7 +29,11 @@ jobs:
           flutter-version: "3.35.4"
           channel: stable
 
-      # 3. Vérification stricte du formatage
+      # 3. Installer les packages Flutter
+      - name: Get Flutter packages
+        run: flutter pub get
+
+      # 4. Vérification stricte du formatage
       - name: Check Dart formatting
         run: |
           echo "🔹 Vérification du formatage des fichiers Dart..."
@@ -41,19 +45,19 @@ jobs:
             echo "✅ Tous les fichiers Dart sont correctement formatés."
           fi
 
-      # 4. Analyse statique
+      # 5. Analyse statique
       - name: Analyze code
-        run: flutter analyze --no-pub --fatal-infos --fatal-warnings
+        run: flutter analyze --fatal-infos --fatal-warnings
 
-      # 5. Lancer les tests avec couverture
+      # 6. Lancer les tests avec couverture
       - name: Run tests with coverage
         run: flutter test --coverage
 
-      # 6. Installer lcov (pour analyser la couverture)
+      # 7. Installer lcov (pour analyser la couverture)
       - name: Install lcov
         run: sudo apt-get install -y lcov
 
-      # 7. Vérifier que la couverture >= 50%
+      # 8. Vérifier que la couverture >= 50%
       - name: Check coverage ≥ 50%
         run: |
           COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
@@ -65,11 +69,11 @@ jobs:
             echo "✅ Couverture suffisante (≥50%)"
           fi
 
-      # 8. Build Flutter Web
+      # 9. Build Flutter Web
       - name: Build Flutter Web
         run: flutter build web --release
 
-      # 9. Sauvegarder le build en artefact
+      # 10. Sauvegarder le build en artefact
       - name: Upload Web Artifact
         uses: actions/upload-artifact@v4
         with:
