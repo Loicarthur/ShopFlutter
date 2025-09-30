@@ -5,6 +5,15 @@ import 'package:flutcom/main.dart';
 
 void main() {
   group('Tests d\'intégration de l\'application', () {
+    testWidgets('App launches without crashing', (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(const MyApp());
+      await tester.pump();
+
+      // Verify that the app launches
+      expect(find.byType(MaterialApp), findsOneWidget);
+    });
+
     testWidgets('App should start and display home page',
         (WidgetTester tester) async {
       // Construire l'application
