@@ -1,7 +1,7 @@
 // Tests d'intégration pour l'application FlutCom
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vraiauth/main.dart';
+import 'package:flutcom/main.dart';
 
 void main() {
   group('Tests d\'intégration de l\'application', () {

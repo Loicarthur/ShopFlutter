@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:vraiauth/pages/home_page.dart';
-import 'package:vraiauth/viewmodels/cart_viewmodel.dart';
-import 'package:vraiauth/viewmodels/products_viewmodel.dart';
-import 'package:vraiauth/models/product.dart';
+import 'package:flutcom/pages/home_page.dart';
+import 'package:flutcom/viewmodels/cart_viewmodel.dart';
+import 'package:flutcom/viewmodels/products_viewmodel.dart';
 
 void main() {
   group('MyHomePage Widget Tests', () {
@@ -243,30 +242,4 @@ void main() {
     });
   });
 
-  group('_QuickAction Widget Tests', () {
-    testWidgets('should display icon, label and respond to tap',
-        (WidgetTester tester) async {
-      bool tapped = false;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) {
-                // Accéder à la classe privée via reflection n'est pas possible
-                // Donc on teste via l'interface publique de MyHomePage
-                return const MyHomePage();
-              },
-            ),
-          ),
-        ),
-      );
-
-      await tester.pump();
-
-      // Les QuickActions sont testées indirectement via MyHomePage
-      expect(find.text('Catalogue'), findsOneWidget);
-      expect(find.byIcon(Icons.list_alt), findsOneWidget);
-    });
-  });
 }

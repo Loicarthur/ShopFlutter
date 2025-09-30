@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vraiauth/services/auth_service.dart';
+import 'package:flutcom/services/auth_service.dart';
 
 // Génération automatique des mocks
 @GenerateMocks([FirebaseAuth, User, UserCredential])

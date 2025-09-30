@@ -1,5 +1,5 @@
-name: vraiauth
-description: "A new Flutter project."
+name: flutcom
+description: "Application e-commerce Flutter avec architecture MVVM."
 
 publish_to: 'none' # Retirer si publication sur pub.dev
 

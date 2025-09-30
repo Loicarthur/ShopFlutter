@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vraiauth/models/order.dart';
-import 'package:vraiauth/models/product.dart';
+import 'package:flutcom/models/order.dart';
+import 'package:flutcom/models/product.dart';
 
 void main() {
   group('OrderItem Model Tests', () {

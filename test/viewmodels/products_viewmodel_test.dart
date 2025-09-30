@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:vraiauth/viewmodels/products_viewmodel.dart';
-import 'package:vraiauth/models/product.dart';
-import 'package:vraiauth/services/api_service.dart';
+import 'package:flutcom/viewmodels/products_viewmodel.dart';
+import 'package:flutcom/models/product.dart';
+import 'package:flutcom/services/api_service.dart';
 
 // Génération automatique des mocks - nécessite build_runner
 @GenerateMocks([ApiService])

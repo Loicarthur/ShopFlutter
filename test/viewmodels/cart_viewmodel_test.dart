@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:vraiauth/viewmodels/cart_viewmodel.dart';
-import 'package:vraiauth/models/product.dart';
+import 'package:flutcom/viewmodels/cart_viewmodel.dart';
+import 'package:flutcom/models/product.dart';
 
 void main() {
   group('CartItem Tests', () {

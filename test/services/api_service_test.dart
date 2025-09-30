@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:http/http.dart' as http;
-import 'package:vraiauth/services/api_service.dart';
-import 'package:vraiauth/models/product.dart';
+import 'package:flutcom/services/api_service.dart';
+import 'package:flutcom/models/product.dart';
 import 'dart:convert';
 
 // Génération automatique des mocks

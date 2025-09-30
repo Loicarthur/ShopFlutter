@@ -11,77 +11,86 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   final OrderRepository _repo = OrderRepository();
-  late Future<List<Order>> _future;
+  List<Order>? _orders;
+  String? _error;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _future = _repo.getOrders();
+    _loadOrders();
+  }
+
+  Future<void> _loadOrders() async {
+    try {
+      final orders = await _repo.getOrders();
+      if (mounted) {
+        setState(() {
+          _orders = orders;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Mes commandes')),
-      body: FutureBuilder<List<Order>>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: _buildBody(),
+    );
+  }
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Erreur: ${snapshot.error}'));
-          }
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-          final orders = snapshot.data ?? [];
+    if (_error != null) {
+      return Center(child: Text('Erreur: $_error'));
+    }
 
-          if (orders.isEmpty) {
-            return const Center(child: Text('Aucune commande'));
-          }
+    final orders = _orders!;
 
-          return ListView.builder(
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              final order = orders[index];
+    if (orders.isEmpty) {
+      return const Center(child: Text('Aucune commande'));
+    }
 
-              final orderId = order.id != null && order.id!.length >= 8
-                  ? order.id!.substring(0, 8)
-                  : order.id ?? '???';
+    return _buildOrdersList(context, orders);
+  }
 
-              final orderDate = order.createdAt != null
-                  ? order.createdAt!.toLocal().toString()
-                  : 'Date inconnue';
+  Widget _buildOrdersList(BuildContext context, List<Order> orders) {
+    return ListView.builder(
+      itemCount: orders.length,
+      itemBuilder: (context, index) {
+        final order = orders[index];
 
-              return ExpansionTile(
-                title: Text(
-                    'Commande $orderId • ${order.totalAmount?.toStringAsFixed(2) ?? '0.00'} €'),
-                subtitle: Text(orderDate),
-                children: (order.items ?? []).map((it) {
-                  final imageWidget = (it.image != null && it.image!.isNotEmpty)
-                      ? Image.network(it.image!,
-                          width: 40, height: 40, fit: BoxFit.cover)
-                      : const Icon(Icons.image, size: 40);
+        final orderId = order.id.length >= 8 ? order.id.substring(0, 8) : order.id;
 
-                  final title = it.title ?? 'Produit inconnu';
-                  final quantity = it.quantity ?? 0;
-                  final unitPrice = it.unitPrice ?? 0.0;
-                  final lineTotal = it.lineTotal ?? 0.0;
+        final orderDate = order.createdAt.toLocal().toString();
 
-                  return ListTile(
-                    leading: imageWidget,
-                    title: Text(title,
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
-                    subtitle:
-                        Text('$quantity x ${unitPrice.toStringAsFixed(2)} €'),
-                    trailing: Text('${lineTotal.toStringAsFixed(2)} €'),
-                  );
-                }).toList(),
-              );
-            },
-          );
-        },
-      ),
+        return ExpansionTile(
+          title: Text('Commande $orderId • ${order.totalAmount.toStringAsFixed(2)} €'),
+          subtitle: Text(orderDate),
+          children: order.items.map((it) {
+            final imageWidget = Image.network(it.image, width: 40, height: 40, fit: BoxFit.cover);
+
+            return ListTile(
+              leading: imageWidget,
+              title: Text(it.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+              subtitle: Text('${it.quantity} x ${it.unitPrice.toStringAsFixed(2)} €'),
+              trailing: Text('${it.lineTotal.toStringAsFixed(2)} €'),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
