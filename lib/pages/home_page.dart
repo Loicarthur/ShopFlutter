@@ -27,7 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('ShopFlutter'), actions: const [CartIconButton()]),
+        title: const Text('ShopFlutter'),
+        actions: const [CartIconButton()],
+      ),
       drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
@@ -72,8 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
             filled: true,
             fillColor: Colors.grey[100],
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none),
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
           ),
         ),
       ),
@@ -203,6 +206,7 @@ class _QuickAction extends StatelessWidget {
         width: 74,
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
+// Nouvelle ligne 209
           color: Color.fromRGBO(color.red, color.green, color.blue, 0.08),
           borderRadius: BorderRadius.circular(12),
         ),
@@ -244,9 +248,10 @@ class _FeaturedCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-                color: const Color.fromRGBO(0, 0, 0, 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2)),
+              color: const Color.fromRGBO(0, 0, 0, 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Column(

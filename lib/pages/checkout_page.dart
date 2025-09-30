@@ -22,7 +22,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   // Simuler un paiement
   Future<bool> _mockPayment() async {
     await Future.delayed(const Duration(seconds: 2));
-    return true; // paiement réussi
+    return true;
   }
 
   // Création de la commande localement
@@ -42,33 +42,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
     cart.clear();
   }
 
-  Future<void> _handlePayment(CartViewModel cart) async {
-    if (cart.items.isEmpty) return;
+    // Gère la logique métier du paiement et de la création de commande
+  Future<bool> _processOrder(CartViewModel cart) async {
+    if (cart.items.isEmpty) return false;
 
-    setState(() => _processing = true);
-
-    // Étape 1 : simuler le paiement
     final paymentSuccess = await _mockPayment();
-    setState(() => _processing = false);
+    if (!paymentSuccess) return false;
 
-    if (mounted) {
-      if (!paymentSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Paiement échoué')),
-        );
-        return;
-      }
-
-      // Étape 2 : créer la commande localement
-      await _createLocalOrder(cart);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Commande créée avec succès !')),
-      );
-
-      // Étape 3 : navigation vers les commandes
-      Navigator.pushReplacementNamed(context, '/orders');
-    }
+    await _createLocalOrder(cart);
+    return true;
   }
 
   String _getPaymentMethodName(PaymentMethod method) {
@@ -98,24 +80,21 @@ class _CheckoutPageState extends State<CheckoutPage> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            RadioListTile<PaymentMethod>(
-              title: const Text('Carte de crédit'),
-              value: PaymentMethod.creditCard,
-              groupValue: _selectedMethod,
-              onChanged: (value) => setState(() => _selectedMethod = value!),
+
+            // RadioGroup moderne pour Flutter 3.32+
+            Column(
+              children: PaymentMethod.values.map((method) {
+                return RadioListTile<PaymentMethod>(
+                  title: Text(_getPaymentMethodName(method)),
+                  value: method,
+                  groupValue: _selectedMethod,
+                  onChanged: (value) {
+                    if (value != null) setState(() => _selectedMethod = value);
+                  },
+                );
+              }).toList(),
             ),
-            RadioListTile<PaymentMethod>(
-              title: const Text('PayPal'),
-              value: PaymentMethod.paypal,
-              groupValue: _selectedMethod,
-              onChanged: (value) => setState(() => _selectedMethod = value!),
-            ),
-            RadioListTile<PaymentMethod>(
-              title: const Text('Apple Pay'),
-              value: PaymentMethod.applePay,
-              groupValue: _selectedMethod,
-              onChanged: (value) => setState(() => _selectedMethod = value!),
-            ),
+
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,16 +118,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 onPressed: _processing || cart.items.isEmpty
                     ? null
-                    : () {
+                    : () async {
+                        setState(() => _processing = true);
+
+                        final success = await _processOrder(cart);
                         if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Paiement avec ${_getPaymentMethodName(_selectedMethod)}...'),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        );
-                        _handlePayment(cart);
+
+                        setState(() => _processing = false);
+
+                        if (!context.mounted) return;
+                        if (success) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Commande créée avec succès !')),
+                          );
+                          Navigator.pushReplacementNamed(context, '/orders');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Le paiement ou la commande a échoué.')),
+                          );
+                        }
                       },
                 child: _processing
                     ? const SizedBox(
