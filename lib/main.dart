@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (settings) {
           final uri = Uri.parse(settings.name ?? '');
           if (uri.pathSegments.isNotEmpty && uri.pathSegments[0] == 'product') {
-            final id = int.tryParse(uri.pathSegments[1] ?? '');
+            final id = int.tryParse(uri.pathSegments[1]);
             final product = settings.arguments as Product?;
             if (id != null) {
               return MaterialPageRoute(

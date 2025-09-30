@@ -51,9 +51,9 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text('Déconnexion'),
             onTap: () async {
+              final navigator = Navigator.of(context);
               await FirebaseAuth.instance.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/login', (route) => false);
+              navigator.pushNamedAndRemoveUntil('/login', (route) => false);
             },
           ),
         ],
