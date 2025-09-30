@@ -42,7 +42,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     cart.clear();
   }
 
-    // Gère la logique métier du paiement et de la création de commande
+  // Gère la logique métier du paiement et de la création de commande
   Future<bool> _processOrder(CartViewModel cart) async {
     if (cart.items.isEmpty) return false;
 
@@ -129,12 +129,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         if (!context.mounted) return;
                         if (success) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Commande créée avec succès !')),
+                            const SnackBar(
+                                content: Text('Commande créée avec succès !')),
                           );
                           Navigator.pushReplacementNamed(context, '/orders');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Le paiement ou la commande a échoué.')),
+                            const SnackBar(
+                                content: Text(
+                                    'Le paiement ou la commande a échoué.')),
                           );
                         }
                       },
