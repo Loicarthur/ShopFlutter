@@ -241,5 +241,4 @@ void main() {
       expect(find.byType(SafeArea), findsOneWidget);
     });
   });
-
 }

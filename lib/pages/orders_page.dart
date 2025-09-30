@@ -72,20 +72,25 @@ class _OrdersPageState extends State<OrdersPage> {
       itemBuilder: (context, index) {
         final order = orders[index];
 
-        final orderId = order.id.length >= 8 ? order.id.substring(0, 8) : order.id;
+        final orderId =
+            order.id.length >= 8 ? order.id.substring(0, 8) : order.id;
 
         final orderDate = order.createdAt.toLocal().toString();
 
         return ExpansionTile(
-          title: Text('Commande $orderId • ${order.totalAmount.toStringAsFixed(2)} €'),
+          title: Text(
+              'Commande $orderId • ${order.totalAmount.toStringAsFixed(2)} €'),
           subtitle: Text(orderDate),
           children: order.items.map((it) {
-            final imageWidget = Image.network(it.image, width: 40, height: 40, fit: BoxFit.cover);
+            final imageWidget = Image.network(it.image,
+                width: 40, height: 40, fit: BoxFit.cover);
 
             return ListTile(
               leading: imageWidget,
-              title: Text(it.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-              subtitle: Text('${it.quantity} x ${it.unitPrice.toStringAsFixed(2)} €'),
+              title:
+                  Text(it.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+              subtitle:
+                  Text('${it.quantity} x ${it.unitPrice.toStringAsFixed(2)} €'),
               trailing: Text('${it.lineTotal.toStringAsFixed(2)} €'),
             );
           }).toList(),

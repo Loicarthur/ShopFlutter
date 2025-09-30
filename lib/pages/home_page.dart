@@ -203,7 +203,7 @@ class _QuickAction extends StatelessWidget {
         width: 74,
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
+          color: Color.fromRGBO(color.red, color.green, color.blue, 0.08),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -244,7 +244,7 @@ class _FeaturedCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: const Color.fromRGBO(0, 0, 0, 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2)),
           ],

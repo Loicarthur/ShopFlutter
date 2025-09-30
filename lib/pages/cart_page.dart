@@ -19,6 +19,7 @@ class CartPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 cart.clear();
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Panier vidé')),
                 );
@@ -56,6 +57,7 @@ class CartPage extends StatelessWidget {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
+              if (!context.mounted) return;
               Navigator.pushNamed(context, '/products');
             },
             child: const Text('Retour aux produits'),
@@ -85,6 +87,7 @@ class CartPage extends StatelessWidget {
           ),
           onDismissed: (_) {
             cart.remove(item.product);
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('${item.product.title} supprimé')),
             );
@@ -131,7 +134,7 @@ class CartPage extends StatelessWidget {
         color: Colors.grey[200],
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: const Color.fromRGBO(0, 0, 0, 0.1),
             blurRadius: 4,
             offset: const Offset(0, -2),
           ),
@@ -162,6 +165,7 @@ class CartPage extends StatelessWidget {
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
+              if (!context.mounted) return;
               Navigator.pushNamed(context, '/checkout');
             },
             child: const Text('Procéder au paiement'),
@@ -218,11 +222,14 @@ class _SuggestionCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () => Navigator.pushNamed(
-            context,
-            '/product/${product.id}',
-            arguments: product,
-          ),
+          onTap: () {
+            if (!context.mounted) return;
+            Navigator.pushNamed(
+              context,
+              '/product/${product.id}',
+              arguments: product,
+            );
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -254,6 +261,7 @@ class _SuggestionCard extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     cart.add(product);
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('${product.title} ajouté au panier'),

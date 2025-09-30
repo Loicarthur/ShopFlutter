@@ -51,23 +51,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final paymentSuccess = await _mockPayment();
     setState(() => _processing = false);
 
-    if (!paymentSuccess) {
+    if (mounted) {
+      if (!paymentSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Paiement échoué')),
+        );
+        return;
+      }
+
+      // Étape 2 : créer la commande localement
+      await _createLocalOrder(cart);
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Paiement échoué')),
+        const SnackBar(content: Text('Commande créée avec succès !')),
       );
-      return;
+
+      // Étape 3 : navigation vers les commandes
+      Navigator.pushReplacementNamed(context, '/orders');
     }
-
-    // Étape 2 : créer la commande localement
-    await _createLocalOrder(cart);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Commande créée avec succès !')),
-    );
-
-    // Étape 3 : navigation vers les commandes
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, '/orders');
   }
 
   String _getPaymentMethodName(PaymentMethod method) {
@@ -101,37 +102,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
               title: const Text('Carte de crédit'),
               value: PaymentMethod.creditCard,
               groupValue: _selectedMethod,
-              onChanged: (PaymentMethod? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                }
-              },
+              onChanged: (value) => setState(() => _selectedMethod = value!),
             ),
             RadioListTile<PaymentMethod>(
               title: const Text('PayPal'),
               value: PaymentMethod.paypal,
               groupValue: _selectedMethod,
-              onChanged: (PaymentMethod? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                }
-              },
+              onChanged: (value) => setState(() => _selectedMethod = value!),
             ),
             RadioListTile<PaymentMethod>(
               title: const Text('Apple Pay'),
               value: PaymentMethod.applePay,
               groupValue: _selectedMethod,
-              onChanged: (PaymentMethod? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedMethod = value;
-                  });
-                }
-              },
+              onChanged: (value) => setState(() => _selectedMethod = value!),
             ),
             const Spacer(),
             Row(
@@ -157,6 +140,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 onPressed: _processing || cart.items.isEmpty
                     ? null
                     : () {
+                        if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
