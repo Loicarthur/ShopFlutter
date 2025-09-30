@@ -81,16 +81,27 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             const SizedBox(height: 16),
 
-            // RadioGroup moderne pour Flutter 3.32+
+            // Sélection de méthode de paiement moderne
             Column(
               children: PaymentMethod.values.map((method) {
-                return RadioListTile<PaymentMethod>(
+                return ListTile(
                   title: Text(_getPaymentMethodName(method)),
-                  value: method,
-                  groupValue: _selectedMethod,
-                  onChanged: (value) {
-                    if (value != null) setState(() => _selectedMethod = value);
-                  },
+                  leading: GestureDetector(
+                    onTap: () => setState(() => _selectedMethod = method),
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey),
+                        color: _selectedMethod == method ? Colors.blue : Colors.transparent,
+                      ),
+                      child: _selectedMethod == method
+                          ? const Icon(Icons.check, size: 16, color: Colors.white)
+                          : null,
+                    ),
+                  ),
+                  onTap: () => setState(() => _selectedMethod = method),
                 );
               }).toList(),
             ),

@@ -206,9 +206,8 @@ class _QuickAction extends StatelessWidget {
         width: 74,
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-// Nouvelle ligne 209
-          color: Color.fromRGBO(color.red, color.green, color.blue, 0.08),
-          borderRadius: BorderRadius.circular(12),
+            color: color.withValues(alpha: 0.08),          
+            borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -246,11 +245,11 @@ class _FeaturedCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: const Color.fromRGBO(0, 0, 0, 0.05),
+              color: Color.fromRGBO(0, 0, 0, 0.05),
               blurRadius: 8,
-              offset: const Offset(0, 2),
+              offset: Offset(0, 2),
             ),
           ],
         ),
