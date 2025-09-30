@@ -5,6 +5,9 @@ class AuthService {
   AuthService._privateConstructor();
   static final AuthService instance = AuthService._privateConstructor();
 
+  // Factory publique pour retourner le singleton et simplifier les tests
+  factory AuthService() => instance;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // 🔹 Utilisateur actuel
