@@ -76,12 +76,14 @@ class MyApp extends StatelessWidget {
         },
         onGenerateRoute: (settings) {
           final uri = Uri.parse(settings.name ?? '');
-          if (uri.pathSegments.isNotEmpty && uri.pathSegments[0] == 'product') {
+          if (uri.pathSegments.isNotEmpty &&
+              uri.pathSegments[0] == 'product') {
             final id = int.tryParse(uri.pathSegments[1] ?? '');
             final product = settings.arguments as Product?;
             if (id != null) {
               return MaterialPageRoute(
-                builder: (_) => ProductDetailPage(productId: id, product: product),
+                builder: (_) =>
+                    ProductDetailPage(productId: id, product: product),
                 settings: settings,
               );
             }
