@@ -13,6 +13,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 // --- Tests ---
 void main() {
   group('MyHomePage Widget (in-file) Tests', () {

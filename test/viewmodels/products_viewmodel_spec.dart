@@ -5,6 +5,7 @@ import 'package:flutcom/services/api_service.dart';
 import 'package:flutcom/viewmodels/products_viewmodel.dart';
 
 class MockApiService extends Mock implements ApiService {}
+
 void main() {
   group('ProductsViewModel with MockApiService', () {
     late ProductsViewModel viewModel;
