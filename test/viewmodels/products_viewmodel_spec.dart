@@ -1,13 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutcom/models/product.dart';
 import 'package:flutcom/services/api_service.dart';
 import 'package:flutcom/viewmodels/products_viewmodel.dart';
 
-import 'products_viewmodel_spec.mocks.dart';
-
-@GenerateMocks([ApiService])
+class MockApiService extends Mock implements ApiService {}
 void main() {
   group('ProductsViewModel with MockApiService', () {
     late ProductsViewModel viewModel;
@@ -29,14 +26,16 @@ void main() {
             price: 9.99,
             description: 'desc',
             category: 'cat',
-            image: 'url'),
+            image: 'url',
+            rating: Rating(rate: 4.5, count: 10)),
         Product(
             id: 2,
             title: 'Test Product 2',
             price: 19.99,
             description: 'desc',
             category: 'cat',
-            image: 'url'),
+            image: 'url',
+            rating: Rating(rate: 4.0, count: 5)),
       ];
       when(mockApiService.fetchProducts())
           .thenAnswer((_) async => fakeProducts);

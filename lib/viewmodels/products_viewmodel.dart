@@ -32,7 +32,7 @@ class ProductsViewModel extends ChangeNotifier {
 
     try {
       // On utilise l'instance fournie (réelle ou mockée).
-      _products = await this.apiService.fetchProducts();
+      _products = await apiService.fetchProducts();
     } catch (error) {
       _setError('Impossible de charger les produits');
     }

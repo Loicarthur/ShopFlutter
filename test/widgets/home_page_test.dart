@@ -4,49 +4,42 @@ import 'package:provider/provider.dart';
 import 'package:flutcom/viewmodels/cart_viewmodel.dart';
 import 'package:flutcom/viewmodels/products_viewmodel.dart';
 import 'package:flutcom/repositories/product_repository.dart';
-import 'package:flutcom/models/product.dart';
 
 class MyHomePage extends StatefulWidget {
   final ProductRepository? repo;
 
-  const MyHomePage({Key? key, this.repo}) : super(key: key);
+  const MyHomePage({super.key, this.repo});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 // --- Tests ---
 void main() {
   group('MyHomePage Widget (in-file) Tests', () {
-    late CartViewModel cartViewModel;
-    late ProductsViewModel productsViewModel;
-
-    setUp(() {
-      cartViewModel = CartViewModel();
-      productsViewModel = ProductsViewModel();
-    });
-
     Widget createTestWidget() {
       return MultiProvider(
         providers: [
-          ChangeNotifierProvider<CartViewModel>.value(value: cartViewModel),
-          ChangeNotifierProvider<ProductsViewModel>.value(
-              value: productsViewModel),
+          ChangeNotifierProvider(create: (_) => CartViewModel()),
+          ChangeNotifierProvider(create: (_) => ProductsViewModel()),
         ],
         child: MaterialApp(
           home: const MyHomePage(),
           routes: {
-            '/catalog': (context) => const Scaffold(
-                  body: Text('Catalog Page'),
+            '/catalog': (context) => Scaffold(
+                  appBar: AppBar(),
+                  body: const Text('Catalog Page'),
                 ),
-            '/products': (context) => const Scaffold(
-                  body: Text('Products Page'),
+            '/products': (context) => Scaffold(
+                  appBar: AppBar(),
+                  body: const Text('Products Page'),
                 ),
-            '/cart': (context) => const Scaffold(
-                  body: Text('Cart Page'),
+            '/cart': (context) => Scaffold(
+                  appBar: AppBar(),
+                  body: const Text('Cart Page'),
                 ),
-            '/orders': (context) => const Scaffold(
-                  body: Text('Orders Page'),
+            '/orders': (context) => Scaffold(
+                  appBar: AppBar(),
+                  body: const Text('Orders Page'),
                 ),
           },
         ),
@@ -87,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final cartViewModel = Provider.of<CartViewModel>(context);
     final productsViewModel = Provider.of<ProductsViewModel>(context);
 
     return Scaffold(
