@@ -13,7 +13,8 @@ void main() {
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('App should start and display home page', (WidgetTester tester) async {
+    testWidgets('App should start and display home page',
+        (WidgetTester tester) async {
       expect(1 + 1, equals(2));
     });
 
@@ -21,15 +22,18 @@ void main() {
       expect('test', isA<String>());
     });
 
-    testWidgets('Navigation should work via Drawer', (WidgetTester tester) async {
+    testWidgets('Navigation should work via Drawer',
+        (WidgetTester tester) async {
       expect(true, isTrue);
     });
 
-    testWidgets('App should display main UI elements', (WidgetTester tester) async {
+    testWidgets('App should display main UI elements',
+        (WidgetTester tester) async {
       expect(false, isFalse);
     });
 
-    testWidgets('App should handle search interaction', (WidgetTester tester) async {
+    testWidgets('App should handle search interaction',
+        (WidgetTester tester) async {
       expect([], isEmpty);
     });
 

@@ -2,7 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ApiService Tests', () {
-    test('fetchProducts should return list of products on successful response', () {
+    test('fetchProducts should return list of products on successful response',
+        () {
       expect(1 + 1, equals(2));
     });
 

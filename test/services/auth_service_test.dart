@@ -17,7 +17,9 @@ void main() {
   });
 
   group('AuthService Tests', () {
-    test('loginWithEmail devrait appeler FirebaseAuth.signInWithEmailAndPassword', () async {
+    test(
+        'loginWithEmail devrait appeler FirebaseAuth.signInWithEmailAndPassword',
+        () async {
       // Arrange
       when(mockFirebaseAuth.signInWithEmailAndPassword(
         email: anyNamed('email'),
@@ -25,7 +27,8 @@ void main() {
       )).thenAnswer((_) async => mockUserCredential);
 
       // Act
-      final result = await authService.loginWithEmail('test@test.com', '123456');
+      final result =
+          await authService.loginWithEmail('test@test.com', '123456');
 
       // Assert
       expect(result, isA<UserCredential>());

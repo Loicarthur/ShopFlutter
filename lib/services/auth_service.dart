@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   // Permet l'injection de dépendance pour les tests
-  AuthService({FirebaseAuth? firebaseAuth}) : _auth = firebaseAuth ?? FirebaseAuth.instance;
+  AuthService({FirebaseAuth? firebaseAuth})
+      : _auth = firebaseAuth ?? FirebaseAuth.instance;
 
   final FirebaseAuth _auth;
 

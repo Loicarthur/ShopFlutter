@@ -9,7 +9,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 class MyHomePage extends StatefulWidget {
   final ProductRepository repo;
 
-  MyHomePage({super.key, ProductRepository? repo}) : repo = repo ?? ProductRepository();
+  MyHomePage({super.key, ProductRepository? repo})
+      : repo = repo ?? ProductRepository();
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

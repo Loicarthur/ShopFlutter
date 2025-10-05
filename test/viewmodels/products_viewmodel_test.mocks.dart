@@ -23,8 +23,22 @@ void main() {
     test('should load products from ApiService', () async {
       // Arrange : on configure le mock pour retourner une liste de produits
       final fakeProducts = [
-        Product(id: 1, title: 'Test Product 1', price: 9.99, description: 'desc', category: 'cat', image: 'url', rating: Rating(rate: 4.5, count: 100)),
-        Product(id: 2, title: 'Test Product 2', price: 19.99, description: 'desc', category: 'cat', image: 'url', rating: Rating(rate: 4.0, count: 200)),
+        Product(
+            id: 1,
+            title: 'Test Product 1',
+            price: 9.99,
+            description: 'desc',
+            category: 'cat',
+            image: 'url',
+            rating: Rating(rate: 4.5, count: 100)),
+        Product(
+            id: 2,
+            title: 'Test Product 2',
+            price: 19.99,
+            description: 'desc',
+            category: 'cat',
+            image: 'url',
+            rating: Rating(rate: 4.0, count: 200)),
       ];
 
       when(mockApiService.fetchProducts())
@@ -40,8 +54,7 @@ void main() {
     });
 
     test('should handle empty list of products', () async {
-      when(mockApiService.fetchProducts())
-          .thenAnswer((_) async => []);
+      when(mockApiService.fetchProducts()).thenAnswer((_) async => []);
 
       await viewModel.loadProducts();
 
@@ -49,13 +62,12 @@ void main() {
     });
 
     test('should set isLoading correctly during product loading', () async {
-      when(mockApiService.fetchProducts())
-          .thenAnswer((_) async => []);
+      when(mockApiService.fetchProducts()).thenAnswer((_) async => []);
 
       // L'état initial est déjà en chargement à cause du constructeur
       // On attend la fin du premier chargement pour pouvoir tester proprement.
       await viewModel.loadProducts();
-      
+
       expect(viewModel.isLoading, isFalse);
 
       final future = viewModel.loadProducts();
@@ -77,7 +89,8 @@ void main() {
 
       // Assert
       expect(viewModel.hasError, isTrue);
-      expect(viewModel.errorMessage, equals('Impossible de charger les produits'));
+      expect(
+          viewModel.errorMessage, equals('Impossible de charger les produits'));
       expect(viewModel.products, isEmpty);
     });
   });

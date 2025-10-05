@@ -10,12 +10,10 @@ class ApiService {
   ApiService({http.Client? client}) : client = client ?? http.Client();
 
   Future<List<Product>> fetchProducts() async {
-    final response = await client
-        .get(
-          Uri.parse('$baseUrl/products'),
-          headers: const {'Content-Type': 'application/json'},
-        )
-        .timeout(const Duration(seconds: 10));
+    final response = await client.get(
+      Uri.parse('$baseUrl/products'),
+      headers: const {'Content-Type': 'application/json'},
+    ).timeout(const Duration(seconds: 10));
 
     if (response.statusCode != 200) {
       throw Exception('HTTP ${response.statusCode}: failed to fetch products');

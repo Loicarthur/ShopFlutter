@@ -167,14 +167,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _quickAction(
-            context, Icons.list_alt, 'Catalogue', () => Navigator.pushNamed(context, '/catalog')),
-        _quickAction(
-            context, Icons.shopping_bag, 'Produits', () => Navigator.pushNamed(context, '/products')),
-        _quickAction(
-            context, Icons.shopping_cart, 'Panier', () => Navigator.pushNamed(context, '/cart')),
-        _quickAction(
-            context, Icons.receipt_long, 'Commandes', () => Navigator.pushNamed(context, '/orders')),
+        _quickAction(context, Icons.list_alt, 'Catalogue',
+            () => Navigator.pushNamed(context, '/catalog')),
+        _quickAction(context, Icons.shopping_bag, 'Produits',
+            () => Navigator.pushNamed(context, '/products')),
+        _quickAction(context, Icons.shopping_cart, 'Panier',
+            () => Navigator.pushNamed(context, '/cart')),
+        _quickAction(context, Icons.receipt_long, 'Commandes',
+            () => Navigator.pushNamed(context, '/orders')),
       ],
     );
   }

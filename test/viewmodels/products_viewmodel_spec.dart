@@ -38,7 +38,8 @@ void main() {
             category: 'cat',
             image: 'url'),
       ];
-      when(mockApiService.fetchProducts()).thenAnswer((_) async => fakeProducts);
+      when(mockApiService.fetchProducts())
+          .thenAnswer((_) async => fakeProducts);
 
       // Act
       await viewModel.loadProducts();
@@ -73,12 +74,14 @@ void main() {
     });
 
     test('should set an error message on API failure', () async {
-      when(mockApiService.fetchProducts()).thenThrow(Exception('Failed to load'));
+      when(mockApiService.fetchProducts())
+          .thenThrow(Exception('Failed to load'));
 
       await viewModel.loadProducts();
 
       expect(viewModel.hasError, isTrue);
-      expect(viewModel.errorMessage, equals('Impossible de charger les produits'));
+      expect(
+          viewModel.errorMessage, equals('Impossible de charger les produits'));
       expect(viewModel.products, isEmpty);
     });
   });
