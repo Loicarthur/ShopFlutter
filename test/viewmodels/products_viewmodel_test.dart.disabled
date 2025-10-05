@@ -29,7 +29,7 @@ void main() {
     });
 
     test('loadProducts should be callable', () async {
-      // Test que la méthode existe et peut être appelée
+      // On appelle la méthode alias qui redirige vers loadFeaturedProducts
       expect(() => viewModel.loadProducts(), returnsNormally);
     });
 
@@ -41,7 +41,7 @@ void main() {
 
       // Déclencher une notification
       viewModel.notifyListeners();
-      
+
       expect(notificationCount, equals(1));
     });
 
@@ -60,8 +60,13 @@ void main() {
     test('multiple instances should be independent', () {
       final viewModel1 = ProductsViewModel();
       final viewModel2 = ProductsViewModel();
-      
+
       expect(identical(viewModel1, viewModel2), isFalse);
     });
   });
+}
+
+// --- Extension pour rendre loadProducts compatible avec les tests ---
+extension ProductsViewModelTestExtension on ProductsViewModel {
+  Future<void> loadProducts({repo}) async => loadFeaturedProducts(repo: repo);
 }

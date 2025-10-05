@@ -1,14 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  // Singleton pour utiliser la même instance partout
-  AuthService._privateConstructor();
-  static final AuthService instance = AuthService._privateConstructor();
+  // Permet l'injection de dépendance pour les tests
+  AuthService({FirebaseAuth? firebaseAuth}) : _auth = firebaseAuth ?? FirebaseAuth.instance;
 
-  // Factory publique pour retourner le singleton et simplifier les tests
-  factory AuthService() => instance;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
 
   // 🔹 Utilisateur actuel
   User? get currentUser => _auth.currentUser;
@@ -33,6 +29,11 @@ class AuthService {
     }
   }
 
+  // 🔹 Alias utilisés par les tests
+  Future<UserCredential> loginWithEmail(String email, String password) {
+    return _auth.signInWithEmailAndPassword(email: email, password: password);
+  }
+
   // 🔹 Connexion
   Future<User?> signInWithEmailAndPassword({
     required String email,
@@ -53,6 +54,9 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  // 🔹 Alias test
+  Future<void> logout() => signOut();
 
   // 🔹 Gestion des erreurs
   String _handleAuthException(FirebaseAuthException e) {

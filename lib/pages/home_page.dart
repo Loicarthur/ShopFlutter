@@ -7,20 +7,21 @@ import '../pages/product_detail_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final ProductRepository repo;
+
+  MyHomePage({super.key, ProductRepository? repo}) : repo = repo ?? ProductRepository();
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final ProductRepository _repo = ProductRepository();
   late Future<List<Product>> _featuredFuture;
 
   @override
   void initState() {
     super.initState();
-    _featuredFuture = _repo.fetchProducts();
+    _featuredFuture = widget.repo.fetchProducts();
   }
 
   @override
@@ -63,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildSearchBar(BuildContext context) {
     return InkWell(
+      key: const Key('home_search_inkwell'),
       onTap: () => Navigator.pushNamed(context, '/catalog'),
       child: IgnorePointer(
         ignoring: true,
@@ -168,14 +170,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 return const Center(child: Text('Aucun produit'));
               }
               final products = snapshot.data!.take(8).toList();
-              return ListView.separated(
+              return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
-                itemBuilder: (context, index) {
-                  final p = products[index];
-                  return _FeaturedCard(product: p);
-                },
+                child: Row(
+                  children: [
+                    for (var i = 0; i < products.length; i++) ...[
+                      if (i > 0) const SizedBox(width: 12),
+                      _FeaturedCard(product: products[i]),
+                    ]
+                  ],
+                ),
               );
             },
           ),

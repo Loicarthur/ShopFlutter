@@ -63,11 +63,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const MyHomePage(),
+        home: MyHomePage(),
         routes: {
           '/login': (_) => const LoginPage(),
           '/register': (_) => const RegisterPage(),
-          '/home': (_) => const MyHomePage(),
+          '/home': (_) => MyHomePage(),
           '/products': (_) => const ProductsPage(),
           '/catalog': (_) => const CatalogPage(),
           '/orders': (_) => const OrdersPage(),

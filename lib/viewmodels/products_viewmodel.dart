@@ -1,10 +1,10 @@
-import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import '../models/product.dart';
 import '../services/api_service.dart';
 
 class ProductsViewModel extends ChangeNotifier {
-  final ApiService _apiService;
+  // La dépendance est déclarée mais pas instanciée ici.
+  final ApiService apiService;
 
   // État privé
   List<Product> _products = [];
@@ -12,30 +12,32 @@ class ProductsViewModel extends ChangeNotifier {
   String _errorMessage = '';
 
   // Getters publics (lecture seule)
-  UnmodifiableListView<Product> get products => UnmodifiableListView(_products);
+  List<Product> get products => _products;
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
   bool get hasError => _errorMessage.isNotEmpty;
 
-  // Pas de chargement automatique pour faciliter les tests et le contrôle
-  ProductsViewModel({ApiService? apiService}) : _apiService = apiService ?? ApiService();
+  // Le constructeur accepte maintenant un ApiService.
+  // Si aucun n'est fourni, il en crée un par défaut.
+  ProductsViewModel({ApiService? apiService})
+      : apiService = apiService ?? ApiService() {
+    loadProducts();
+  }
 
   Future<void> loadProducts() async {
-    // Éviter les appels multiples simultanés
     if (_isLoading) return;
 
     _setLoading(true);
     _clearError();
 
     try {
-      final fetched = await _apiService.fetchProducts();
-      _products = List<Product>.unmodifiable(fetched);
-      notifyListeners();
+      // On utilise l'instance fournie (réelle ou mockée).
+      _products = await this.apiService.fetchProducts();
     } catch (error) {
-      _setError('Impossible de charger les produits: ${error.toString()}');
-    } finally {
-      _setLoading(false);
+      _setError('Impossible de charger les produits');
     }
+
+    _setLoading(false);
   }
 
   // Méthodes privées pour gérer l'état
@@ -50,7 +52,6 @@ class ProductsViewModel extends ChangeNotifier {
   }
 
   void _clearError() {
-    if (_errorMessage.isEmpty) return;
     _errorMessage = '';
     notifyListeners();
   }
