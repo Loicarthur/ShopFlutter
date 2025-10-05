@@ -28,7 +28,8 @@ void main() {
           'rating': {'rate': 4.0, 'count': 5}
         },
       ];
-      final client = MockClient((request) async => http.Response(jsonEncode(sample), 200,
+      final client = MockClient((request) async => http.Response(
+          jsonEncode(sample), 200,
           headers: {'Content-Type': 'application/json'}));
       final api = ApiService(client: client);
 

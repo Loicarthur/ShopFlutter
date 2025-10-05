@@ -48,7 +48,8 @@ Widget _wrapWithProviders(Widget child) {
 void main() {
   group('HomePage (lib/pages/home_page.dart)', () {
     testWidgets('shows empty state when repo returns empty', (tester) async {
-      await tester.pumpWidget(_wrapWithProviders(MyHomePage(repo: _FakeRepoEmpty())));
+      await tester
+          .pumpWidget(_wrapWithProviders(MyHomePage(repo: _FakeRepoEmpty())));
       // initial frame
       await tester.pump();
       // let future resolve
@@ -58,7 +59,8 @@ void main() {
     });
 
     testWidgets('shows featured list when repo returns data', (tester) async {
-      await tester.pumpWidget(_wrapWithProviders(MyHomePage(repo: _FakeRepoNonEmpty())));
+      await tester.pumpWidget(
+          _wrapWithProviders(MyHomePage(repo: _FakeRepoNonEmpty())));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
