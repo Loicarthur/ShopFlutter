@@ -58,11 +58,11 @@ void main() {
       expect(result, isEmpty);
     });
   });
-
 }
 
 class ProductTestUtils {
-  static String encode(Object body) => body is String ? body : _jsonEncode(body);
+  static String encode(Object body) =>
+      body is String ? body : _jsonEncode(body);
 }
 
 String _jsonEncode(Object? value) => const JsonEncoder().convert(value);
