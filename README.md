@@ -43,3 +43,10 @@ Pour lancer tous les tests du projet, utilisez la commande suivante :
 ```bash
 flutter test test/test_all.dart
 ```
+
+## ⚙️ CI/CD avec GitHub Actions
+
+Ce projet utilise [GitHub Actions](https://github.com/features/actions) pour l'intégration continue. Le workflow est déclenché à chaque `push` sur la branche `main` et effectue les tâches suivantes :
+- **Vérification du formatage** : S'assure que tout le code Dart est correctement formaté.
+- **Analyse statique** : Détecte les erreurs et les problèmes potentiels dans le code avec `flutter analyze`.
+- **Exécution des tests** : Lance la suite de tests complète pour valider le bon fonctionnement de l'application.
