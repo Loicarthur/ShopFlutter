@@ -10,6 +10,10 @@ Ce projet est une application e-commerce développée avec Flutter, suivant l'ar
 - **Commandes** : Historique des commandes passées.
 - **Authentification** : Inscription et connexion des utilisateurs.
 
+## 📦 Source des Données
+
+**Important** : Actuellement, l'application utilise une API de test ([Fake Store API](https://fakestoreapi.com/)). Les produits, les catégories et les utilisateurs sont donc des **données mockées** et ne sont pas réels.
+
 ## 🏗️ Architecture
 
 Le projet est structuré en suivant le pattern MVVM pour une meilleure séparation des responsabilités :
@@ -38,3 +42,4 @@ Pour lancer tous les tests du projet, utilisez la commande suivante :
 
 ```bash
 flutter test test/test_all.dart
+```
