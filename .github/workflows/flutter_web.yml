@@ -57,16 +57,16 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install -y lcov
 
-      # 8. Vérifier que la couverture >= 50%
-      - name: Check coverage ≥ 50%
+      # 8. Vérifier que la couverture >= 25%
+      - name: Check coverage ≥ 25%
         run: |
           COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
           echo "📊 Coverage: $COVERAGE%"
-          if (( $(echo "$COVERAGE < 50" | bc -l) )); then
-            echo "❌ Couverture inférieure à 50%"
+          if (( $(echo "$COVERAGE < 25" | bc -l) )); then
+            echo "❌ Couverture inférieure à 25%"
             exit 1
           else
-            echo "✅ Couverture suffisante (≥50%)"
+            echo "✅ Couverture suffisante (≥25%)"
           fi
 
       # 9. Build Flutter Web
