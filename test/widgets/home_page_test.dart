@@ -55,6 +55,14 @@ void main() {
       expect(find.text('ShopFlutter'), findsOneWidget);
     });
 
+    testWidgets('app bar shows cart icon', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pump();
+
+      // There are two shopping_cart icons (AppBar + QuickAction)
+      expect(find.byIcon(Icons.shopping_cart), findsAtLeastNWidgets(1));
+    });
+
     testWidgets('tapping search navigates to catalog',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
@@ -66,6 +74,46 @@ void main() {
 
       expect(find.text('Catalog Page'), findsOneWidget);
     });
+
+    testWidgets('quick actions navigate correctly',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pump();
+
+      final actions = {
+        'Catalogue': 'Catalog Page',
+        'Produits': 'Products Page',
+        'Panier': 'Cart Page',
+        'Commandes': 'Orders Page',
+      };
+
+      for (final entry in actions.entries) {
+        await tester.tap(find.text(entry.key).hitTestable());
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        expect(find.text(entry.value), findsOneWidget);
+        await tester.pageBack();
+        await tester.pumpAndSettle();
+      }
+    });
+
+    testWidgets('categories navigate to catalog', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
+      await tester.pump();
+
+      final categories = [
+        "men's clothing",
+        'jewelery',
+        'electronics',
+        "women's clothing"
+      ];
+      for (final cat in categories) {
+        await tester.tap(find.text(cat).hitTestable());
+        await tester.pumpAndSettle(const Duration(seconds: 1));
+        expect(find.text('Catalog Page'), findsOneWidget);
+        await tester.pageBack();
+        await tester.pumpAndSettle();
+      }
+    });
   });
 }
 
@@ -73,7 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // Charger les produits via le ViewModel existant
     final productsViewModel =
         Provider.of<ProductsViewModel>(context, listen: false);
     productsViewModel.loadProducts();
@@ -172,16 +219,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  // ✅ InkWell instead of GestureDetector for reliable tap detection
   Widget _quickAction(
       BuildContext context, IconData icon, String label, VoidCallback onTap) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      child: Column(
-        children: [
-          Icon(icon, size: 32),
-          const SizedBox(height: 4),
-          Text(label),
-        ],
+      borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            Icon(icon, size: 32),
+            const SizedBox(height: 4),
+            Text(label),
+          ],
+        ),
       ),
     );
   }

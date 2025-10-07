@@ -36,10 +36,13 @@ Widget _wrapWithProviders(Widget child) {
     child: MaterialApp(
       home: child,
       routes: {
-        '/catalog': (_) => const Scaffold(body: Text('Catalog')),
-        '/products': (_) => const Scaffold(body: Text('Products')),
-        '/cart': (_) => const Scaffold(body: Text('Cart')),
-        '/orders': (_) => const Scaffold(body: Text('Orders')),
+        '/catalog': (_) =>
+            Scaffold(appBar: AppBar(), body: const Text('Catalog')),
+        '/products': (_) =>
+            Scaffold(appBar: AppBar(), body: const Text('Products')),
+        '/cart': (_) => Scaffold(appBar: AppBar(), body: const Text('Cart')),
+        '/orders': (_) =>
+            Scaffold(appBar: AppBar(), body: const Text('Orders')),
       },
     ),
   );
@@ -90,6 +93,93 @@ void main() {
         }
       }
       expect(found, isTrue);
+    });
+
+    testWidgets('opens drawer from AppBar menu', (tester) async {
+      await tester.pumpWidget(_wrapWithProviders(MyHomePage()));
+      await tester.pump();
+
+      final menu = find.byTooltip('Open navigation menu');
+      expect(menu, findsOneWidget);
+      await tester.tap(menu);
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byType(Drawer), findsOneWidget);
+    });
+
+    testWidgets('cart icon navigates to cart', (tester) async {
+      await tester.pumpWidget(_wrapWithProviders(MyHomePage()));
+      await tester.pump();
+
+      final cartIcon = find.byIcon(Icons.shopping_cart).hitTestable();
+      expect(cartIcon, findsOneWidget);
+      await tester.tap(cartIcon);
+      // Wait for navigation to cart deterministically
+      var toCart = false;
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (find.text('Cart').evaluate().isNotEmpty) {
+          toCart = true;
+          break;
+        }
+      }
+      expect(toCart, isTrue);
+    });
+
+    testWidgets('categories chip navigates to catalog', (tester) async {
+      await tester.pumpWidget(_wrapWithProviders(MyHomePage()));
+      await tester.pump();
+
+      final chip = find.text('electronics').hitTestable();
+      expect(chip, findsOneWidget);
+      await tester.tap(chip);
+      var toCatalog = false;
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (find.text('Catalog').evaluate().isNotEmpty) {
+          toCatalog = true;
+          break;
+        }
+      }
+      expect(toCatalog, isTrue);
+    });
+
+    testWidgets('quick actions navigate to Products and Orders',
+        (tester) async {
+      // Use an empty repo to avoid building featured network images/timers
+      await tester
+          .pumpWidget(_wrapWithProviders(MyHomePage(repo: _FakeRepoEmpty())));
+      await tester.pump();
+
+      // Products
+      final prodFinder = find.text('Produits');
+      await tester.ensureVisible(prodFinder);
+      await tester.tap(prodFinder.hitTestable());
+      // Wait for navigation to complete with bounded pumps
+      var toProducts = false;
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (find.text('Products').evaluate().isNotEmpty) {
+          toProducts = true;
+          break;
+        }
+      }
+      expect(toProducts, isTrue);
+
+      // Back then Orders
+      await tester.pageBack();
+      await tester.pump(const Duration(milliseconds: 200));
+      final ordersFinder = find.text('Commandes');
+      await tester.ensureVisible(ordersFinder);
+      await tester.tap(ordersFinder.hitTestable());
+      var toOrders = false;
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        if (find.text('Orders').evaluate().isNotEmpty) {
+          toOrders = true;
+          break;
+        }
+      }
+      expect(toOrders, isTrue);
     });
   });
 }
