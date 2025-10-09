@@ -50,3 +50,9 @@ Ce projet utilise [GitHub Actions](https://github.com/features/actions) pour l'i
 - **Vérification du formatage** : S'assure que tout le code Dart est correctement formaté.
 - **Analyse statique** : Détecte les erreurs et les problèmes potentiels dans le code avec `flutter analyze`.
 - **Exécution des tests** : Lance la suite de tests complète pour valider le bon fonctionnement de l'application.
+
+
+## 🌐 Démo
+
+Vous pouvez essayer la **démo Web** de cette mini app ici :  
+https://shop-flutter-8cfy.vercel.app
