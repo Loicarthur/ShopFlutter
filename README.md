@@ -38,3 +38,10 @@ Pour lancer tous les tests du projet, utilisez la commande suivante :
 
 ```bash
 flutter test test/test_all.dart
+```
+
+Pour lancer l'analyse du projet, utilisez la commande suivante :
+
+```bash
+flutter analyze
+```
